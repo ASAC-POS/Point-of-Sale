@@ -1,8 +1,10 @@
-# Point-of-Sale
+# debuggers team
+
+**debuggers team members** : Mohammad Salameh, Jalal Hasan, Leen Ahmad, Neveen Aburomman, Manal Albahar
 
 ## Team Agreement
 
-1.  key strengths
+1. key strengths
 
 | Jalal       | Mohammad  | Neveen        | Leen        | Manal                  |
 | ----------- | --------- | ------------- | ----------- | ---------------------- |
@@ -82,7 +84,7 @@ Communication and assigning tasks as per each person strength point, making sure
 
 2. What project management tool will be used?
 
-Click up
+Trello
 
 ## Git Process
 
