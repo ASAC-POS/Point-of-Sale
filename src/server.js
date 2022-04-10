@@ -8,13 +8,14 @@ const cors = require('cors')
 const error = require('./errorhandlers/500')
 const notFound = require('./errorhandlers/404')
 
-
+const Auth = require('../src/routes/auth')
 
 const app = express()
 
 // use 
 app.use(express.json())
 app.use(cors())
+app.use(Auth)
 
 
 
