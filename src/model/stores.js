@@ -3,7 +3,7 @@
 const stores =(sequelize,DataTypes)=> sequelize.define('stores',{
 
 
-        storename :{
+    storename :{
             type:DataTypes.STRING,
             },
         
@@ -12,8 +12,7 @@ const stores =(sequelize,DataTypes)=> sequelize.define('stores',{
         type:DataTypes.STRING,
         },
 
-    //we should have the products as an array of objects
-    products :{
+    productID :{
         type:DataTypes.STRING,
     }
     })

@@ -3,17 +3,26 @@ const receipts =(sequelize,DataTypes)=> sequelize.define('receipts',{
 
 
 
-    totalnumber :{
+    totalPrice:{
         type:DataTypes.STRING,
     },
 
-    quantitynumber :{
+    quantityNumber :{
         type:DataTypes.STRING,
     },
 
-    products :{
-        type:DataTypes.STRING,
-    }
+     userID:{
+        type:DataTypes.INTEGER,
+        allowNull:false 
+     },
+     paymentDate: {
+        type: Sequelize.DATE,
+      },
+
+      itemsSold :{
+        type: Sequelize.ARRAY,
+      }
+
     })
     
     
