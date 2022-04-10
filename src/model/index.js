@@ -1,1 +1,2 @@
  // this will initiate sequelize
+ 
