@@ -12,16 +12,21 @@
 - users:
 
   | ID (PK) serial | NAME string | password(hashed) | role string | storename string | storeID (FK) string |
-  | -------------- | ----------- | ----------- | ---------------- | ------------------- | ------------------- |
+  | -------------- | ----------- | ---------------- | ----------- | ---------------- | ------------------- |
 
 - stores:
 
-  | ID (PK) serial | storename sting | location string | products (array of objects) |
-  | -------------- | --------------- | --------------- | --------------------------- |
+  | ID (PK) serial | storename sting | location string | productId (FK) |
+  | -------------- | --------------- | --------------- | -------------- |
+
+- products:
+
+  | ID (PK) serial | productName sting | quantity integer | price integer | minQuantity integer|
+  | -------------- | ---------- | --------------- | ------------- | ------------- |
 
 - receipts:
 
-  | ID (PK) serial | total number | quantity number | userID (FK) string | items sold (array) | date (date) |
+  | ID (PK) serial | total integer | quantity integer | userID (FK) string | items sold (array) | date (date) |
   | -------------- | ------------ | --------------- | ------------------ | ------------------ | ----------- |
 
 ## Stories
