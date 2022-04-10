@@ -1,0 +1,1 @@
+// this will handle any route for stores (CRUD)

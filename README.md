@@ -11,8 +11,8 @@
 
 - users:
 
-  | ID (PK) serial | NAME string | role string | storename string | storeID (FK) string |
-  | -------------- | ----------- | ----------- | ---------------- | ------------------- |
+  | ID (PK) serial | NAME string | password(hashed) | role string | storename string | storeID (FK) string |
+  | -------------- | ----------- | ----------- | ---------------- | ------------------- | ------------------- |
 
 - stores:
 
