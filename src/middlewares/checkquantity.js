@@ -1,0 +1,1 @@
+// this will check the quantity of products after each deduction and alert to inventory if the quantity is below a certain ammout
