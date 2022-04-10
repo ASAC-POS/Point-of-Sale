@@ -10,6 +10,9 @@ const bcrypt = require('bcrypt');
 
 const {Users} = require('../model/index')
 
+const basicAuth = require('../middlewares/basicAuth')
+
+
 
 const Auth = express.Router();
 
@@ -17,8 +20,10 @@ const Auth = express.Router();
 
 //routes
 Auth.post('/signup' , signup)
+Auth.post('/signin' , basicAuth , signin)
 
 //functions 
+// function sign up
 async function signup(req , res){
     try{
         req.body.password = await bcrypt.hash(req.body.password , 5)
@@ -27,6 +32,12 @@ async function signup(req , res){
     }catch (error){
         res.status(403).send(error);
     }
+}
+
+
+// function sign in 
+async function signin(req , res){
+    res.status(201).send(req.user)
 }
 
 module.exports = Auth;
