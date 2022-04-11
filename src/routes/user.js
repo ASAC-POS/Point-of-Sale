@@ -10,7 +10,7 @@ const express = require('express');
 const router = express.Router();
 const bearerAuth = require('../middlewares/bearerAuth');
 const acl = require('../middlewares/acl');
-const Users = require('../model/index');
+const {Users} = require('../model/index');
 
 router.post('/user', bearerAuth, acl('create'), addUser);
 router.get('/users', bearerAuth, acl('read'), getUsers);

@@ -42,7 +42,7 @@ userModel.belongsTo(storesModel, { foreignKey: "storeID", targetKey: "id" });
 
 module.exports = {
   db: sequelize, //for connection ,we will use it the index.js
-  users: userModel,
+  Users: userModel,
   stores: storesModel,
   receipts: receiptsModel,
 };
