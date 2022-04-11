@@ -1,23 +1,25 @@
-const products =(sequelize,DataTypes)=> sequelize.define('products',{
+const products = (sequelize, DataTypes) =>
+  sequelize.define("products", {
+    productName: {
+      type: DataTypes.STRING,
+    },
 
+    quantity: {
+      type: DataTypes.INTEGER,
+    },
 
-    productName :{
-            type:DataTypes.STRING,
-            },
-        
+    price: {
+      type: DataTypes.INTEGER,
+    },
 
-    quantity :{
-        type:DataTypes.INTEGER,
-        },
+    minQuantity: {
+      type: DataTypes.INTEGER,
+    },
 
-    price:{
-        type:DataTypes.INTEGER,
-        },
+    storeID: {
+      type: DataTypes.INTEGER,
+      // allowNull: false,
+    },
+  });
 
-    minQuantity:{
-        type:DataTypes.INTEGER,
-        },
-
-    })
-
-    module.exports=products;
+module.exports = products;

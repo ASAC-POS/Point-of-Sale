@@ -1,7 +1,7 @@
 // this will check valid tokens
 
 'use strict';
-const {User} =require('../model/index');
+const {Users} =require('../model/index');
 const jwt =require('jsonwebtoken');
 
 const SECRET = process.env.SECRET || "Manal Secret";
@@ -13,7 +13,7 @@ const bearerAuth = async (req,res,next) =>{
        console.log(token);
         try {
             const parsedToken =jwt.verify(token ,SECRET);
-            let user = await User.findOne({where :{username: parsedToken.username}});
+            let user = await Users.findOne({where :{username: parsedToken.username}});
             if (user) {
                 console.log(user);
                 req.user =user;
