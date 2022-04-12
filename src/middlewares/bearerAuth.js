@@ -25,6 +25,8 @@ const bearerAuth = async (req,res,next) =>{
         } catch (error) {
             res.status(403).send(`error from bearer ${error}`)
         }
+    }else{
+        next('authorization field error')
     }
 }
 
