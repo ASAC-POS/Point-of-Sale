@@ -3,6 +3,7 @@
 'use strict'
 const base64 = require('base-64');
 const bcrypt = require('bcrypt');
+const { Users } = require('../model/index');
 const JWT = require('jsonwebtoken');
 const SECRET = process.env.SECRET || "Manal Secret";
 
@@ -14,7 +15,7 @@ const basicAuth = async (req, res, next) => {
             let decoded = base64.decode(encoded);
             let [username, password] = decoded.split(':');
 
-            const user = await User.findOne({ where: { username: username } });
+            const user = await Users.findOne({ where: { username: username } });
             var validPass = await bcrypt.compare(password, user.password);
             if (validPass){
                  console.log(validPass);

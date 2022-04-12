@@ -16,10 +16,6 @@ const receipts = (sequelize, DataTypes) =>
     paymentDate: {
       type: DataTypes.DATE,
     },
-
-    // itemsSold: {
-    //   type: DataTypes.ARRAY,
-    // },
   });
 
 module.exports = receipts;

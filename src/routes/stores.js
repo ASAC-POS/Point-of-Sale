@@ -5,9 +5,9 @@ const express = require("express");
 const router = express.Router();
 const bearerAuth = require("../middlewares/bearerAuth");
 const acl = require("../middlewares/acl");
-const { stores, users } = require("../model/index.js");
+const { stores, Users } = require("../model/index.js");
 
-router.post("/store", bearerAuth, acl("create"), addStore);
+router.post("/store",  addStore);
 router.get("/stores", bearerAuth, acl("read"), getStores);
 router.get("/store/:id", bearerAuth, acl("read"), getStore);
 router.put("/store/:id", bearerAuth, acl("update"), updateStore);
@@ -42,7 +42,7 @@ async function deleteStore(req, res) {
 }
 
 async function getStoreEmps(req, res) {
-  const storeEmps = await stores.findAll({ include: [users] });
+  const storeEmps = await stores.findAll({ include: [Users] });
   res.status(200).json(storeEmps);
 }
 
