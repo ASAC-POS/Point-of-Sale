@@ -11,6 +11,7 @@ const router = express.Router();
 const bearerAuth = require('../middlewares/bearerAuth');
 const acl = require('../middlewares/acl');
 const {Users} = require('../model/index');
+const bcrypt = require('bcrypt');
 
 router.post('/user', bearerAuth, acl('create'), addUser);
 router.get('/users', bearerAuth, acl('read'), getUsers);
@@ -20,7 +21,9 @@ router.delete('/user/:id', bearerAuth, acl('delete'), deleteUser);
 
 async function addUser(req, res) {
   const reqBody = req.body;
+  reqBody.password = await bcrypt.hash(reqBody.password , 5)
   const addedUser = await Users.create(reqBody);
+
   res.status(201).json(addedUser);
 }
 
@@ -35,7 +38,11 @@ async function getUser(req, res) {
 
 async function updateUser(req, res) {
   const id = req.params.id;
+  const oldPass = await Users.findOne({ where: {id:id}}).password;
   const reqBody = req.body;
+  if(reqBody.password !== oldPass){
+    reqBody.password = await bcrypt.hash(reqBody.password , 5);
+  }
   res.status(201).json(await Users.update(reqBody, { where: { id: id } }));
 }
 
