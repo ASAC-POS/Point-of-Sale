@@ -11,7 +11,7 @@ const checkQuantity = require('../middlewares/checkquantity')
 
 //endpoits
 //post
-router.post('/product', bearerAuth, acl('create'), addProduct);
+router.post('/product', bearerAuth, acl('add'), addProduct);
 //get
 router.get('/products', bearerAuth, acl('read'), getProducts);
 //get
