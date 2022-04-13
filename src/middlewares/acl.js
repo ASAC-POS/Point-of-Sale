@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 // this file will include access control list middleware (checks role's action)
 
 // [admin, cashier, inventory]
@@ -12,10 +12,10 @@ module.exports = function (action) {
       if (req.user.actions.includes(action)) {
         next();
       } else {
-        next('access denied');
+        next("access denied");
       }
     } catch (error) {
-      next('LEEN');
+      next("LEEN");
     }
   };
 };

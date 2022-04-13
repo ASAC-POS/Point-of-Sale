@@ -7,34 +7,34 @@
 ## Database
 
 **Data Model**
-![data model](./assets/Data-Modeling.jpg)
+![data model](./assets/DBRD.png)
 
 - users:
 
-  | ID (PK) serial | NAME string | password(hashed) | role string | storename string | storeID (FK) string |
-  | -------------- | ----------- | ---------------- | ----------- | ---------------- | ------------------- |
+  | ID (PK) serial | username string | password(hashed) | role string | actions Virtual | Token Virtual | storeID (FK) integer |
+  | -------------- | --------------- | ---------------- | ----------- | --------------- | ------------- | -------------------- |
 
 - stores:
 
-  | ID (PK) serial | storename sting | location string | productId (FK) |
-  | -------------- | --------------- | --------------- | -------------- |
+  | ID (PK) serial | storename sting | email string | location string | business type string |
+  | -------------- | --------------- | ------------ | --------------- | -------------------- |
 
 - products:
 
-  | ID (PK) serial | productName sting | quantity integer | price integer | minQuantity integer|
-  | -------------- | ---------- | --------------- | ------------- | ------------- |
+  | ID (PK) serial | productName sting | quantity integer | price integer | minQuantity integer | storeID (FK) integer |
+  | -------------- | ----------------- | ---------------- | ------------- | ------------------- | -------------------- |
 
 - receipts:
 
-  | ID (PK) serial | total integer | quantity integer | userID (FK) string | items sold (array) | date (date) |
-  | -------------- | ------------ | --------------- | ------------------ | ------------------ | ----------- |
+  | ID (PK) serial | totalPrice integer | quantityNumber integer | userID (FK) string | paymentDate (date) |
+  | -------------- | ------------------ | ---------------------- | ------------------ | ------------------ |
 
 ## Stories
 
 1. Register a store
 
-- as a user I would like to register my store
-- singup endpoint, hashing passwords, adding an entry to user tables
+- as a user I would like to register my store (this is process is implemented by the user sending a form containing the store name, the store owner email address, the store location and store type of business )
+- As software admin, we start by creating a store and adding the store owner as an admin to the recently created store, hashing passwords, adding an entry to user tables related to the specific store using the store ID.
 - check if the entry was added
 
 2. adding employees
