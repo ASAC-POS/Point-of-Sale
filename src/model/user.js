@@ -77,7 +77,7 @@ const user = (sequelize, DataTypes) => {
       if (isValid) {
         let token = jwt.sign(
           {
-            exp: Math.floor(Data.now() / 1000) + 1200,
+            // exp: Math.floor(Data.now() / 1000) + 1200, //token expiary might not be needed, as the chashier will be working on shift.
             id: user.id,
           },
           SECRET

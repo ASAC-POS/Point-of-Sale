@@ -10,7 +10,7 @@ const { receipts , Users } = require('../model/index.js')
 
 //endpoints
 //post
-router.post('/receipt', bearerAuth, acl('create'), addReceipt);
+router.post('/receipt', bearerAuth, acl('add'), addReceipt);
 //get
 router.get('/receipts', bearerAuth, acl('read'), getReceipts);
 //get
@@ -18,11 +18,11 @@ router.get('/receipt/:id', bearerAuth, acl('read'), getReceipt);
 //put
 router.put('/receipt/:id', bearerAuth, acl('update'), updateReceipt);
 //delete
-router.delete('/receipt/:id', bearerAuth, acl('delete'), deleteReceipt);
+router.delete('/receipt/:id', bearerAuth, acl('remove'), deleteReceipt);
 //get
-router.get('/getReceipt' , getReceiptEmps)
+router.get('/getReceipt', bearerAuth, acl('read'),getReceiptEmps)
 //get one user receipt
-router.get('/getReceipt/:id' , getReceiptEmpsByID)
+router.get('/getReceipt/:id', bearerAuth, acl('read'), getReceiptEmpsByID)
 
 
 

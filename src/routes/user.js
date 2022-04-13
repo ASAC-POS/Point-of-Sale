@@ -16,15 +16,15 @@ const bcrypt = require('bcrypt');
 
 //endpoints
 //post
-router.post('/user', bearerAuth, acl('create'), addUser);
+router.post('/user', bearerAuth, acl('create'), addUser);// only the admin user can create new users
 //get
-router.get('/users', bearerAuth, acl('read'), getUsers);
+router.get('/users', bearerAuth, acl('read'), getUsers);// this won't be needed (critical security issue) we can use an endpoint ('/users/:storeID/:id)
 //get
-router.get('/user/:id', bearerAuth, acl('read'), getUser);
+router.get('/user/:id', bearerAuth, acl('read'), getUser); //we can change the endpoint to check both storeID and user ID ('/user/:storeID/:id)
 //put
-router.put('/user/:id', bearerAuth, acl('update'), updateUser);
+router.put('/user/:id', bearerAuth, acl('edit'), updateUser);//only the admin can edit user's information 
 //delete
-router.delete('/user/:id', bearerAuth, acl('delete'), deleteUser);
+router.delete('/user/:id', bearerAuth, acl('delete'), deleteUser);//only the admin ca delete a user (the role doesn't matter)
 
 
 //functions
