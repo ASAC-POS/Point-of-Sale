@@ -11,7 +11,7 @@ const checkQuantity = require('../middlewares/checkquantity')
 
 //endpoits
 //post
-router.post('/product', bearerAuth, acl('create'), addProduct);
+router.post('/product', bearerAuth, acl('add'), addProduct);
 //get
 router.get('/products', bearerAuth, acl('read'), getProducts);
 //get
@@ -19,11 +19,11 @@ router.get('/product/:id', bearerAuth, acl('read'), getProduct);
 //put
 router.put('/product/:id', bearerAuth, acl('update'),checkQuantity, updateProduct);
 //delete
-router.delete('/product/:id', bearerAuth, acl('delete'), deleteProduct);
-//get
-router.get('/getProduct' , getProductEmps)
-//get one user product
-router.get('/getProduct/:id' , getproductEmpsByID)
+router.delete('/product/:id', bearerAuth, acl('remove'), deleteProduct);
+//get all stores with the products associated with that store
+router.get('/getProduct', bearerAuth, acl('read') , getProductEmps)
+//get one store with the products associated with that store
+router.get('/getProduct/:id',bearerAuth,acl('read') , getproductEmpsByID)
 
 
 //add new product

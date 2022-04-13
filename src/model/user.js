@@ -18,14 +18,14 @@ const user = (sequelize, DataTypes) => {
         },
       },
 
-      // unique: true,
+      unique: true,
       //to throw an error in any attempt to insert an
       //username that already exists
     },
 
     password: {
       type: DataTypes.STRING,
-      // allowNull: false,
+      allowNull: false,
     },
 
     role: {
@@ -33,13 +33,24 @@ const user = (sequelize, DataTypes) => {
       defaultValue: "cashier",
     },
 
+    /*
+    actions:
+      - read : can request data from the database [all users]
+      - update : can edit data from the database [all users]
+      - add : can add data to product and receipts tables [all users]
+      - remove : can remove a profuct from product's tables [admin, inventory]
+      - create : can create new users for a store id [admin]
+      - delete : can remove a receipt or a user from their tables [admin]
+      - edit : can edit user's information (password, username) [admin]
+    */
+    
     actions: {
       type: DataTypes.VIRTUAL,
       get() {
         const acl = {
-          cashier: ["read", "update"],
-          inventory: ["read", "add", "update"],
-          admin: ["read", "create", "update", "delete", "add"],
+          cashier: ["read", "update","add"],
+          inventory: ["read", "add", "update","remove"],
+          admin: ["read", "create", "update", "delete", "add","remove","edit"],
         };
         return acl[this.role];
       },
@@ -52,7 +63,7 @@ const user = (sequelize, DataTypes) => {
     },
     storeID: {
       type: DataTypes.INTEGER,
-      // allowNull: false,
+      allowNull: false,
     },
   });
 
@@ -66,7 +77,7 @@ const user = (sequelize, DataTypes) => {
       if (isValid) {
         let token = jwt.sign(
           {
-            exp: Math.floor(Data.now() / 1000) + 1200,
+            // exp: Math.floor(Data.now() / 1000) + 1200, //token expiary might not be needed, as the chashier will be working on shift.
             id: user.id,
           },
           SECRET
