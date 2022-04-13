@@ -5,38 +5,69 @@ const express = require('express');
 const router = express.Router();
 const bearerAuth = require('../middlewares/bearerAuth');
 const acl = require('../middlewares/acl');
-const Receipts = requiure('../model/index.js')
+const { receipts , Users } = require('../model/index.js')
 
+
+//endpoints
+//post
 router.post('/receipt', bearerAuth, acl('create'), addReceipt);
+//get
 router.get('/receipts', bearerAuth, acl('read'), getReceipts);
+//get
 router.get('/receipt/:id', bearerAuth, acl('read'), getReceipt);
+//put
 router.put('/receipt/:id', bearerAuth, acl('update'), updateReceipt);
+//delete
 router.delete('/receipt/:id', bearerAuth, acl('delete'), deleteReceipt);
+//get
+router.get('/getReceipt' , getReceiptEmps)
+//get one user receipt
+router.get('/getReceipt/:id' , getReceiptEmpsByID)
 
+
+
+//functions
+//add receipt
 async function addReceipt(req, res) {
   const reqBody = req.body;
-  const addedReceipt = await Receipts.create(reqBody);
+  const addedReceipt = await receipts.create(reqBody);
   res.status(201).json(addedReceipt);
 }
 
+//get all receipt
 async function getReceipts(req, res) {
-  res.status(200).json(await Receipts.findAll());
+  res.status(200).json(await receipts.findAll());
 }
 
+// get receipt by id 
 async function getReceipt(req, res) {
   const id = req.params.id;
-  res.status(200).json(await Receipts.findOne({ where: { id: id } }));
+  res.status(200).json(await receipts.findOne({ where: { id: id } }));
 }
 
+//update receipt by id
 async function updateReceipt(req, res) {
   const id = req.params.id;
   const reqBody = req.body;
-  res.status(201).json(await Receipts.update(reqBody, { where: { id: id } }));
+  res.status(201).json(await receipts.update(reqBody, { where: { id: id } }));
 }
 
+//delete receipt by id
 async function deleteReceipt(req, res) {
   const id = req.params.id;
-  res.status(200).json(await Receipts.destroy({ where: { id: id } }));
+  res.status(200).json(await receipts.destroy({ where: { id: id } }));
+}
+
+//get users receipt
+async function getReceiptEmps(req, res) {
+  const receiptsEmps = await Users.findAll({ include: [receipts] });
+  res.status(200).json(receiptsEmps);
+}
+
+//get one user receipt
+async function getReceiptEmpsByID(req , res){
+  const id = req.params.id;
+  res.status(200).json(await Users.findOne({include : [receipts] , where:{id:id}}))
 }
 
 module.exports = router;
