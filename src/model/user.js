@@ -5,7 +5,7 @@
 const bycrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
-const SECRET = process.env.SECRET || 'LEEN';
+const SECRET = process.env.SECRET || "LEEN";
 
 const user = (sequelize, DataTypes) => {
   const Users = sequelize.define("users", {
@@ -18,7 +18,7 @@ const user = (sequelize, DataTypes) => {
         },
       },
 
-      // unique: true, 
+      // unique: true,
       //to throw an error in any attempt to insert an
       //username that already exists
     },
@@ -37,9 +37,9 @@ const user = (sequelize, DataTypes) => {
       type: DataTypes.VIRTUAL,
       get() {
         const acl = {
-          cashier : ["read", "update"],
-          inventory : ["read", "add", "update"],
-          admin: ["read", "create", "update", "delete" , "add"],
+          cashier: ["read", "update"],
+          inventory: ["read", "add", "update"],
+          admin: ["read", "create", "update", "delete", "add"],
         };
         return acl[this.role];
       },
@@ -47,19 +47,17 @@ const user = (sequelize, DataTypes) => {
     // storename: {
     //   type: DataTypes.STRING,
     // },
-    token:{
+    token: {
       type: DataTypes.VIRTUAL,
     },
     storeID: {
       type: DataTypes.INTEGER,
       // allowNull: false,
     },
-
   });
 
   //basic function
   Users.authenticate = async function (username, password) {
-
     try {
       const user = await this.findOne({ where: { username: username } });
 

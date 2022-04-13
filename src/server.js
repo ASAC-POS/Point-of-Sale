@@ -11,6 +11,7 @@ const userRoutes = require("./routes/user");
 const storeRoutes = require("./routes/stores");
 const productRoutes = require('./routes/products')
 const receiptRoutes = require('./routes/receiptes')
+const logger = require("./middlewares/logger");
 
 const Auth = require("../src/routes/auth");
 
@@ -24,6 +25,7 @@ app.use(userRoutes);
 app.use(storeRoutes);
 app.use(productRoutes)
 app.use(receiptRoutes)
+app.use(logger);
 
 //routes
 app.get("/", home);
