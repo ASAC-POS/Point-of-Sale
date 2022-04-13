@@ -55,16 +55,16 @@ const user = (sequelize, DataTypes) => {
         return acl[this.role];
       },
     },
-    // storename: {
+    // \\storename: {
     //   type: DataTypes.STRING,
     // },
     token: {
       type: DataTypes.VIRTUAL,
     },
     storeID: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+     type: DataTypes.INTEGER,
+      //allowNull: false,
+   },
   });
 
   //basic function
