@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt');
 const {Users} = require('../model/index')
 
 const basicAuth = require('../middlewares/basicAuth')
-
+const validator =require("../middlewares/validator")
 
 
 const Auth = express.Router();
@@ -19,7 +19,7 @@ const Auth = express.Router();
 
 
 //routes
-Auth.post('/signup' , signup)
+Auth.post('/signup' ,validator, signup)
 Auth.post('/signin' , basicAuth , signin)
 
 //functions 

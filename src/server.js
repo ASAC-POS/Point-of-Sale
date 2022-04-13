@@ -9,6 +9,7 @@ const error = require("./errorhandlers/500");
 const notFound = require("./errorhandlers/404");
 const userRoutes = require("./routes/user");
 const storeRoutes = require("./routes/stores");
+const logger = require("./middlewares/logger");
 
 const Auth = require("../src/routes/auth");
 
@@ -20,6 +21,7 @@ app.use(cors());
 app.use(Auth);
 app.use(userRoutes);
 app.use(storeRoutes);
+app.use(logger);
 
 //routes
 app.get("/", home);
