@@ -13,12 +13,22 @@ const acl = require('../middlewares/acl');
 const {Users} = require('../model/index');
 const bcrypt = require('bcrypt');
 
+
+//endpoints
+//post
 router.post('/user', bearerAuth, acl('create'), addUser);
+//get
 router.get('/users', bearerAuth, acl('read'), getUsers);
+//get
 router.get('/user/:id', bearerAuth, acl('read'), getUser);
+//put
 router.put('/user/:id', bearerAuth, acl('update'), updateUser);
+//delete
 router.delete('/user/:id', bearerAuth, acl('delete'), deleteUser);
 
+
+//functions
+//add users
 async function addUser(req, res) {
   const reqBody = req.body;
   reqBody.password = await bcrypt.hash(reqBody.password , 5)
@@ -27,15 +37,18 @@ async function addUser(req, res) {
   res.status(201).json(addedUser);
 }
 
+//get all users
 async function getUsers(req, res) {
   res.status(200).json(await Users.findAll());
 }
 
+//get users by id
 async function getUser(req, res) {
   const id = req.params.id;
   res.status(200).json(await Users.findOne({ where: { id: id } }));
 }
 
+//update user info
 async function updateUser(req, res) {
   const id = req.params.id;
   const oldPass = await Users.findOne({ where: {id:id}}).password;
@@ -46,6 +59,7 @@ async function updateUser(req, res) {
   res.status(201).json(await Users.update(reqBody, { where: { id: id } }));
 }
 
+//delete user
 async function deleteUser(req, res) {
   const id = req.params.id;
   res.status(200).json(await Users.destroy({ where: { id: id } }));
