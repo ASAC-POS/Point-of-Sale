@@ -2,7 +2,7 @@ const products = (sequelize, DataTypes) =>
   sequelize.define("products", {
     
     productName: {
-      type: DataTypes.ARRAY(DataTypes.JSON)
+      type: DataTypes.STRING,
     },
 
     quantity: {
