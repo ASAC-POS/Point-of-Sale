@@ -55,6 +55,15 @@ userModel.belongsTo(storesModel, { foreignKey: "storeID", targetKey: "id" });
 userModel.hasMany(receiptsModel, { foreignKey: "userID", sourceKey: "id" });
 receiptsModel.belongsTo(userModel, { foreignKey: "userID", targetKey: "id" });
 
+// Store-receipts realtion
+// One store has many receipts relation
+
+storesModel.hasMany(receiptsModel, { foreignKey: "storeID", sourceKey: "id" });
+receiptsModel.belongsTo(storesModel, {
+  foreignKey: "storeID",
+  targetKey: "id",
+});
+
 module.exports = {
   db: sequelize, //for connection, we will use it the index.js
   Users: userModel,
