@@ -2,7 +2,20 @@
 
 ## Wireframe
 
-![hompage](./assets/home.png)
+![hompage](./assets/pointOfSaleImages/homepage.png)
+
+![sigin in](./assets//pointOfSaleImages/signinpage.png)
+
+![store home page](./assets/pointOfSaleImages/storeprofileadmin.png)
+
+![product](./assets/pointOfSaleImages/productpage.png)
+
+![users](./assets/pointOfSaleImages/userpage.png)
+
+![receipts](./assets/pointOfSaleImages/receiptspage%20.png)
+
+![point of sale page](./assets/pointOfSaleImages/pointofsalepage.png)
+
 
 ## Database
 

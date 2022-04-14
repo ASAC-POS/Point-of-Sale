@@ -48,7 +48,7 @@ const user = (sequelize, DataTypes) => {
       type: DataTypes.VIRTUAL,
       get() {
         const acl = {
-          cashier: ["read", "update", "add"],
+          cashier: ["read", "update", "sell"],
           inventory: ["read", "add", "update", "remove"],
           admin: [
             "read",
@@ -58,6 +58,7 @@ const user = (sequelize, DataTypes) => {
             "add",
             "remove",
             "edit",
+            "sell",
           ],
         };
         return acl[this.role];

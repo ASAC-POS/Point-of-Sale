@@ -8,7 +8,7 @@ const cors = require('cors');
 
 const bcrypt = require('bcrypt');
 
-const {Users} = require('../model/index')
+const {Users , stores} = require('../model/index')
 
 const basicAuth = require('../middlewares/basicAuth')
 const validator =require("../middlewares/validator")
@@ -19,7 +19,7 @@ const Auth = express.Router();
 
 
 //routes
-Auth.post('/signup' ,validator, signup)
+Auth.post('/register' ,validator, signup)
 Auth.post('/signin' , basicAuth , signin)
 
 //functions 
@@ -27,7 +27,8 @@ Auth.post('/signin' , basicAuth , signin)
 async function signup(req , res){
     try{
         req.body.password = await bcrypt.hash(req.body.password , 5)
-        const record = await Users.create(req.body);
+        const store = await stores.create({storename : req.body.storename , email: req.body.email , location: req.body.location , businessType: req.body.businessType})
+        const record = await Users.create({username: req.body.username , password:req.body.password , role: "admin" , storeID : store.id});
         res.status(201).json(record);
     }catch (error){
         res.status(403).send(error);

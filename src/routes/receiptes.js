@@ -10,9 +10,7 @@ const { receipts , Users } = require('../model/index.js')
 
 //endpoints
 //post
-router.post('/receipt', bearerAuth, acl('add'), addReceipt);
-//get
-router.get('/receipts', bearerAuth, acl('read'), getReceipts);
+router.post('/receipt', bearerAuth, acl('sell'), addReceipt);
 //get
 router.get('/receipt/:id', bearerAuth, acl('read'), getReceipt);
 //put
@@ -32,11 +30,6 @@ async function addReceipt(req, res) {
   const reqBody = req.body;
   const addedReceipt = await receipts.create(reqBody);
   res.status(201).json(addedReceipt);
-}
-
-//get all receipt
-async function getReceipts(req, res) {
-  res.status(200).json(await receipts.findAll());
 }
 
 // get receipt by id 

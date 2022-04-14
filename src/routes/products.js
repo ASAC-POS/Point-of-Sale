@@ -13,15 +13,11 @@ const checkQuantity = require('../middlewares/checkquantity')
 //post
 router.post('/product', bearerAuth, acl('add'), addProduct);
 //get
-router.get('/products', bearerAuth, acl('read'), getProducts);
-//get
 router.get('/product/:id', bearerAuth, acl('read'), getProduct);
 //put
 router.put('/product/:id', bearerAuth, acl('update'),checkQuantity, updateProduct);
 //delete
 router.delete('/product/:id', bearerAuth, acl('remove'), deleteProduct);
-//get all stores with the products associated with that store
-router.get('/getProduct', bearerAuth, acl('read') , getProductEmps)
 //get one store with the products associated with that store
 router.get('/getProduct/:id',bearerAuth,acl('read') , getproductEmpsByID)
 
@@ -31,11 +27,6 @@ async function addProduct(req, res) {
   const reqBody = req.body;
   const addedProduct = await products.create(reqBody);
   res.status(201).json(addedProduct);
-}
-
-//get data for all products
-async function getProducts(req, res) {
-  res.status(200).json(await products.findAll());
 }
 
 //gete data of one type of product 
@@ -55,12 +46,6 @@ async function updateProduct(req, res) {
 async function deleteProduct(req, res) {
   const id = req.params.id;
   res.status(200).json(await products.destroy({ where: { id: id } }));
-}
-
-//get products from store
-async function getProductEmps(req, res) {
-  const productsEmps = await stores.findAll({ include: [products] });
-  res.status(200).json(productsEmps);
 }
 
 //get one user product
