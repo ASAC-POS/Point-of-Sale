@@ -19,11 +19,13 @@ const receipts = (sequelize, DataTypes) =>
       type: DataTypes.INTEGER,
       //allowNull: false,
     },
+    storeID: {
+      type: DataTypes.INTEGER,
+    },
     //cash or visa 
     PaymentMethod:{
       type: DataTypes.STRING,
     }
-    
   });
 
 module.exports = receipts;

@@ -19,5 +19,6 @@ const stores = (sequelize, DataTypes) =>
       type: DataTypes.STRING,
     },
   });
+  
 
 module.exports = stores;
