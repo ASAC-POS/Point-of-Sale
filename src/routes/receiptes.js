@@ -6,11 +6,13 @@ const router = express.Router();
 const bearerAuth = require('../middlewares/bearerAuth');
 const acl = require('../middlewares/acl');
 const { receipts , Users } = require('../model/index.js')
+const detuct =require('../middlewares/detuct')
+const checkQun = require('../middlewares/checkquantity')
 
 
 //endpoints
 //post
-router.post('/receipt', bearerAuth, acl('sell'), addReceipt);
+router.post('/receipt', bearerAuth, acl('sell'),detuct, checkQun,addReceipt);
 //get
 router.get('/receipt/:id', bearerAuth, acl('read'), getReceipt);
 //put
