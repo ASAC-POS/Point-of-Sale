@@ -1,11 +1,6 @@
 'use strict';
 // this will handle any route for users (CRUD)
 
-// [admin, cashier, inventory]
-// admin --> (read,delete,update,write)
-// cashier ---> (read,update)
-// inventory --> (read,update,write)
-
 const express = require('express');
 const router = express.Router();
 const bearerAuth = require('../middlewares/bearerAuth');
@@ -17,8 +12,6 @@ const bcrypt = require('bcrypt');
 //endpoints
 //post
 router.post('/user', bearerAuth, acl('create'), addUser);// only the admin user can create new users
-//get
-router.get('/users', bearerAuth, acl('read'), getUsers);// this won't be needed (critical security issue) we can use an endpoint ('/users/:storeID/:id)
 //get
 router.get('/user/:id', bearerAuth, acl('read'), getUser); //we can change the endpoint to check both storeID and user ID ('/user/:storeID/:id)
 //put
@@ -35,11 +28,6 @@ async function addUser(req, res) {
   const addedUser = await Users.create(reqBody);
 
   res.status(201).json(addedUser);
-}
-
-//get all users
-async function getUsers(req, res) {
-  res.status(200).json(await Users.findAll());
 }
 
 //get users by id

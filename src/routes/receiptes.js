@@ -12,9 +12,7 @@ const checkQun = require('../middlewares/checkquantity')
 
 //endpoints
 //post
-router.post('/receipt', bearerAuth, acl('add'),detuct, checkQun,addReceipt);
-//get
-router.get('/receipts', bearerAuth, acl('read'), getReceipts);
+router.post('/receipt', bearerAuth, acl('sell'),detuct, checkQun,addReceipt);
 //get
 router.get('/receipt/:id', bearerAuth, acl('read'), getReceipt);
 //put
@@ -34,11 +32,6 @@ async function addReceipt(req, res) {
   const reqBody = req.body;
   const addedReceipt = await receipts.create(reqBody);
   res.status(201).json(addedReceipt);
-}
-
-//get all receipt
-async function getReceipts(req, res) {
-  res.status(200).json(await receipts.findAll());
 }
 
 // get receipt by id 
