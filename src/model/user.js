@@ -43,14 +43,22 @@ const user = (sequelize, DataTypes) => {
       - delete : can remove a receipt or a user from their tables [admin]
       - edit : can edit user's information (password, username) [admin]
     */
-    
+
     actions: {
       type: DataTypes.VIRTUAL,
       get() {
         const acl = {
-          cashier: ["read", "update","add"],
-          inventory: ["read", "add", "update","remove"],
-          admin: ["read", "create", "update", "delete", "add","remove","edit"],
+          cashier: ["read", "update", "add"],
+          inventory: ["read", "add", "update", "remove"],
+          admin: [
+            "read",
+            "create",
+            "update",
+            "delete",
+            "add",
+            "remove",
+            "edit",
+          ],
         };
         return acl[this.role];
       },
@@ -106,3 +114,4 @@ const user = (sequelize, DataTypes) => {
 };
 
 module.exports = user;
+
