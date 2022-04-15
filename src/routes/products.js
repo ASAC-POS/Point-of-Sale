@@ -26,9 +26,13 @@ router.delete("/product/:id", bearerAuth, acl("remove"), deleteProduct);
 //get one store with the products associated with that store
 router.get("/getProduct/:id", bearerAuth, acl("read"), getproductEmpsByID);
 
+// get all products of a specific store
+router.get("/products", bearerAuth, acl("read"), getAllProducts);
+
 //add new product
 async function addProduct(req, res) {
   const reqBody = req.body;
+  reqBody.storeID = req.session.storeID;
   const addedProduct = await products.create(reqBody);
   res.status(201).json(addedProduct);
 }
@@ -58,6 +62,15 @@ async function getproductEmpsByID(req, res) {
   res
     .status(200)
     .json(await stores.findOne({ include: [products], where: { id: id } }));
+}
+
+// get all products of a store
+// This will retrieve the products for only the store of the signed in user
+async function getAllProducts(req, res) {
+  const sessionStoreID = req.session.storeID;
+  res
+    .status(200)
+    .json(await products.findAll({ where: { storeID: sessionStoreID } }));
 }
 
 module.exports = router;
