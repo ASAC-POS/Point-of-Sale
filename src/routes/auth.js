@@ -20,7 +20,7 @@ Auth.post("/register", validator, signup);
 Auth.post("/signin", basicAuth, signin);
 
 //functions
-// function sign up
+// function register
 async function signup(req, res) {
   try {
     req.body.password = await bcrypt.hash(req.body.password, 5);
@@ -47,7 +47,6 @@ async function signup(req, res) {
 async function signin(req, res) {
   // saving the storeID in the session after a successfull sign-in
   req.session.storeID = req.user.storeID;
-  console.log(req.session);
   res.status(201).send(req.user);
 }
 

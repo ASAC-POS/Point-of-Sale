@@ -25,7 +25,7 @@ const app = express();
 app.use(
   session({
     secret: "keyboard cat",
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     store: new SequelizeStore({
       db,
