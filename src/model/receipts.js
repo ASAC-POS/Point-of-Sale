@@ -7,13 +7,6 @@ const receipts = (sequelize, DataTypes) =>
         type: DataTypes.ARRAY(DataTypes.JSON)
         }
     ,
-    totalPrice: {
-      type: DataTypes.FLOAT,
-    },
-
-    quantityNumber: {
-      type: DataTypes.FLOAT,
-    },
 
     userID: {
       type: DataTypes.INTEGER,
@@ -25,6 +18,16 @@ const receipts = (sequelize, DataTypes) =>
     //cash or visa 
     PaymentMethod:{
       type: DataTypes.STRING,
+    },
+
+    total: {
+      type: DataTypes.FLOAT,
+    },
+    discount :{
+      type: DataTypes.FLOAT,
+    },
+    totalAfterDiscount :{
+      type:DataTypes.FLOAT,
     }
   });
 
