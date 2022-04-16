@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
         price: product.price,
         minQuantity: product.minQuantity,
         storeID: product.storeID,
-      });
+      },({where:{id:product.id}}));
     }
   });
   next();
