@@ -11,8 +11,10 @@ const bcrypt = require("bcrypt");
 //endpoints
 //post
 router.post("/user", bearerAuth, acl("create"), addUser); // only the admin user can create new users
+// get All stores users
+router.get("/users", bearerAuth, acl("read"), getAllusers);
 //get
-router.get("/user/:id", bearerAuth, acl("read"), getUser); //we can change the endpoint to check both storeID and user ID ('/user/:storeID/:id)
+router.get("/user/:id", bearerAuth, acl("read"), getUser); //we can change the endpoint to check both storeID and user ID ('/user/:id)
 //put
 router.put("/user/:id", bearerAuth, acl("edit"), updateUser); //only the admin can edit user's information
 //delete
@@ -32,24 +34,45 @@ async function addUser(req, res) {
 //get users by id
 async function getUser(req, res) {
   const id = req.params.id;
-  res.status(200).json(await Users.findOne({ where: { id: id } }));
+  const found = await Users.findOne({ where: { id: id } });
+  if (found.storeID === req.session.storeID) {
+    res.status(200).json(found);
+  } else {
+    res.status(403).send("Unauthorized access");
+  }
 }
 
 //update user info
 async function updateUser(req, res) {
   const id = req.params.id;
-  const oldPass = await Users.findOne({ where: { id: id } }).password;
-  const reqBody = req.body;
-  if (reqBody.password !== oldPass) {
-    reqBody.password = await bcrypt.hash(reqBody.password, 5);
+  const oldPass = await Users.findOne({ where: { id: id } });
+  if (oldPass.storeID === req.session.storeID) {
+    const reqBody = req.body;
+    reqBody.storeID = req.session.storeID;
+    if (reqBody.password !== oldPass.password) {
+      reqBody.password = await bcrypt.hash(reqBody.password, 5);
+    }
+    res.status(201).json(await Users.update(reqBody, { where: { id: id } }));
+  } else {
+    res.status(403).send("Unauthorized access");
   }
-  res.status(201).json(await Users.update(reqBody, { where: { id: id } }));
 }
 
 //delete user
 async function deleteUser(req, res) {
   const id = req.params.id;
-  res.status(200).json(await Users.destroy({ where: { id: id } }));
+  const deletedUser = await Users.findOne({ where: { id } });
+  if (deletedUser.storeID === req.session.storeID) {
+    await Users.destroy({ where: { id: id } });
+    res.status(200).json(deletedUser);
+  } else res.status(403).send("Unauthorized access");
+}
+
+// Get all of the sotre users
+async function getAllusers(req, res) {
+  res
+    .status(200)
+    .json(await Users.findAll({ where: { storeID: req.session.storeID } }));
 }
 
 module.exports = router;

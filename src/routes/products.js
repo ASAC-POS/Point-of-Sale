@@ -67,10 +67,10 @@ async function getproductEmpsByID(req, res) {
 // get all products of a store
 // This will retrieve the products for only the store of the signed in user
 async function getAllProducts(req, res) {
-  const sessionStoreID = req.session.storeID;
+  // const sessionStoreID = ;
   res
     .status(200)
-    .json(await products.findAll({ where: { storeID: sessionStoreID } }));
+    .json(await products.findAll({ where: { storeID: req.session.storeID } }));
 }
 
 module.exports = router;
