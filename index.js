@@ -9,6 +9,6 @@ const server = require('./src/server')
 const {db} = require('./src/model/index')
 
 db.sync().then(() => {
-    server.start(process.env.PORT || 3000)
+    server.start(process.env.PORT || 3001)
 }).catch(console.error);
 
