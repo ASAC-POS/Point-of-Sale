@@ -25,6 +25,9 @@ router.get("/storereceipts", bearerAuth, acl("read"), getAllReceipts);
 async function getStore(req, res) {
   const id = req.params.id;
   const found = await stores.findOne({ where: { id: id } })
+  console.log("lllllllllllllllllll" ,found)
+  console.log(req.session.storeID)
+  console.log(found.id)
   if(found.id === req.session.storeID){
   res.status(200).json(found);
   } else {
@@ -40,18 +43,22 @@ async function updateStore(req, res) {
   if(oldStore.id === req.session.storeID){
     const reqBody = req.body;
     reqBody.id = req.session.storeID
-    res.status(201).json(await stores.update(reqBody, { where: { id: id } }));
-  }else {
+    await stores.update(reqBody, { where: { id: id } });
+    const updateStore = stores.findOne({where: {id : id}})
+    res.status(201).json({updateStore: updateStore , message: `store with id: ${id} was updated successfully`});
+  }
+  else {
     res.status(403).json('Unauthorized access');
     }
-}
+  }
 
 //delete store by id
 async function deleteStore(req, res) {
   const id = req.params.id;
   const deletedStore = await stores.findOne({ where: { id: id } })
   if(deletedStore.id === req.session.storeID){
-    res.status(200).json(await stores.destroy({ where: { id: id } }));
+    await stores.destroy({ where: { id: id } })
+    res.status(200).json({message: `store with id: ${id} was deleted successfully`});
   }else {
     res.status(403).json('Unauthorized access');
     }
