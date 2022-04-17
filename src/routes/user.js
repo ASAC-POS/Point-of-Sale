@@ -70,9 +70,7 @@ async function deleteUser(req, res) {
 
 // Get all of the sotre users
 async function getAllusers(req, res) {
-  res
-    .status(200)
-    .json(await Users.findAll({ where: { storeID: req.session.storeID } }));
+  res.status(200).json(await Users.findAll({ where: { storeID: req.session.storeID } }));
 }
 
 module.exports = router;
