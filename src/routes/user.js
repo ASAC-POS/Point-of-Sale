@@ -46,13 +46,15 @@ async function getUser(req, res) {
 async function updateUser(req, res) {
   const id = req.params.id;
   const oldPass = await Users.findOne({ where: { id: id } });
+  const reqBody = req.body;
   if (oldPass.storeID === req.session.storeID) {
-    const reqBody = req.body;
     reqBody.storeID = req.session.storeID;
     if (reqBody.password !== oldPass.password) {
       reqBody.password = await bcrypt.hash(reqBody.password, 5);
     }
-    res.status(201).json(await Users.update(reqBody, { where: { id: id } }));
+    await Users.update(reqBody, { where: { id: id } })
+    const updatedUser = Users.findOne({ where: {id:id}});
+    res.status(201).json({updatedUser:updatedUser, message: `user with id: ${id} was updated successfully`});
   } else {
     res.status(403).send("Unauthorized access");
   }
@@ -64,7 +66,7 @@ async function deleteUser(req, res) {
   const deletedUser = await Users.findOne({ where: { id } });
   if (deletedUser.storeID === req.session.storeID) {
     await Users.destroy({ where: { id: id } });
-    res.status(200).json(deletedUser);
+    res.status(200).json({message: `user with id: ${id} was deleted successfully`});
   } else res.status(403).send("Unauthorized access");
 }
 
