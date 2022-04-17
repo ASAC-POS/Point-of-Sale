@@ -28,6 +28,7 @@ router.get("/storereceipts/:id", bearerAuth, acl("read", getAllReceipts));
 async function addStore(req, res) {
   const reqBody = req.body;
   const addedStore = await stores.create(reqBody);
+  
   res.status(201).json(addedStore);
 }
 
