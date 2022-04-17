@@ -52,13 +52,18 @@ async function getReceipt(req, res) {
 async function updateReceipt(req, res) {
   const id = req.params.id;
   const reqBody = req.body;
-  res.status(201).json(await receipts.update(reqBody, { where: { id: id } }));
+  const oldReceipt = await receipts.findOne({ where: { id: id } });
+  await receipts.update(reqBody, { where: { id: id } });
+  const updatedReceipt = await receipts.findOne({ where: { id: id } });
+  res.status(201).json({updatedReceipt:updatedReceipt, message:`receipt with id: ${id} was updated successfully`});
 }
 
 //delete receipt by id
 async function deleteReceipt(req, res) {
   const id = req.params.id;
-  res.status(200).json(await receipts.destroy({ where: { id: id } }));
+  const deletedReceipt= await receipts.findOne({ where: { id: id}});
+  await receipts.destroy({ where: { id: id } })
+  res.status(200).json({message: `receipt with id: ${id} was deleted successfully`});
 }
 
 //get users receipt
