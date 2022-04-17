@@ -14,13 +14,7 @@ router.post('/product', bearerAuth, acl('add'), addProduct);
 //get a specific product
 router.get('/product/:id', bearerAuth, acl('read'), getProduct);
 //put
-router.put(
-  '/product/:id',
-  bearerAuth,
-  acl('update'),
-  checkQuantity,
-  updateProduct
-);
+router.put('/product/:id',bearerAuth,acl('update'),checkQuantity, updateProduct);
 //delete
 router.delete('/product/:id', bearerAuth, acl('remove'), deleteProduct);
 //get one store with the products associated with that store
@@ -42,7 +36,7 @@ async function getProduct(req, res) {
   const id = req.params.id;
   const found = await products.findOne({ where: { id: id } });
   if (found === null) {
-    res.status(200).json('product has been deleted');
+    res.status(200).json('this product might not exists');
   } else {
     if (found.storeID === req.session.storeID) {
       res.status(200).json(found);
