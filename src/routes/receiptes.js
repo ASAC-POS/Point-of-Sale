@@ -30,6 +30,14 @@ router.get('/getReceipt/:id', bearerAuth, acl('read'), getReceiptEmpsByID)
 //add receipt
 async function addReceipt(req, res) {
   const reqBody = req.body;
+  const total=reqBody.total;
+  if (reqBody.discount){
+  const discount =reqBody.discount;
+  reqBody.totalAfterDiscount=total-(total*(discount/100).toFixed(2))
+  }else{
+    reqBody.discount=0;
+    reqBody.totalAfterDiscount=total;
+  }
   const addedReceipt = await receipts.create(reqBody);
   res.status(201).json(addedReceipt);
 }
