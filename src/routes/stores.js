@@ -8,8 +8,6 @@ const acl = require("../middlewares/acl");
 const { stores, Users, receipts } = require("../model/index.js");
 
 //endpoints
-//post
-router.post("/store", addStore); // we need to discuss what kind of acl needed in here (we can put it as a sign up instead and create 1 store and 1 user)
 //get
 router.get("/store/:id", bearerAuth, acl("read"), getStore); // any user can check the store's information if the have the storeID = id.
 //put
@@ -17,60 +15,56 @@ router.put("/store/:id", bearerAuth, acl("update"), updateStore); //only the adm
 //delete
 router.delete("/store/:id", bearerAuth, acl("delete"), deleteStore); //only the admin user that has that store id can delete the store!! (critical)
 //get
-router.get("/storeEmps", getStoreEmps); // this won't be needed, or can be given to a super previledged user (site owner) ()
-//get one
-router.get("/storeEmps/:id", bearerAuth, acl("read"), getStoreEmpsByID); // any user can check the store's information if the have the storeID = id.
+router.get("/storeEmps", bearerAuth, acl("read"), getStoreEmps); // this won't be needed, or can be given to a super previledged user (site owner) ()
 // get all the store's receipts
-router.get("/storereceipts/:id", bearerAuth, acl("read", getAllReceipts));
+router.get("/storereceipts", bearerAuth, acl("read"), getAllReceipts);
 
 //functions
-//add store
-async function addStore(req, res) {
-  const reqBody = req.body;
-  const addedStore = await stores.create(reqBody);
-  res.status(201).json(addedStore);
-}
-
-//get store
-async function getStores(req, res) {
-  res.status(200).json(await stores.findAll());
-}
 
 //get store by id
 async function getStore(req, res) {
   const id = req.params.id;
-  res.status(200).json(await stores.findOne({ where: { id: id } }));
+  const found = await stores.findOne({ where: { id: id } })
+  if(found.id === req.session.storeID){
+  res.status(200).json(found);
+  } else {
+  res.status(403).json('Unauthorized access');
+  }
 }
 
 //update store by id
 async function updateStore(req, res) {
   const id = req.params.id;
-  const reqBody = req.body;
-  res.status(201).json(await stores.update(reqBody, { where: { id: id } }));
+
+  const oldStore = await stores.findOne({where: {id : id}})
+  if(oldStore.id === req.session.storeID){
+    const reqBody = req.body;
+    reqBody.id = req.session.storeID
+    res.status(201).json(await stores.update(reqBody, { where: { id: id } }));
+  }else {
+    res.status(403).json('Unauthorized access');
+    }
 }
 
 //delete store by id
 async function deleteStore(req, res) {
   const id = req.params.id;
-  res.status(200).json(await stores.destroy({ where: { id: id } }));
+  const deletedStore = await stores.findOne({ where: { id: id } })
+  if(deletedStore.id === req.session.storeID){
+    res.status(200).json(await stores.destroy({ where: { id: id } }));
+  }else {
+    res.status(403).json('Unauthorized access');
+    }
 }
 
 //get users from stores
 async function getStoreEmps(req, res) {
-  const storeEmps = await stores.findAll({ include: [Users] });
-  res.status(200).json(storeEmps);
-}
-
-//get one user store
-async function getStoreEmpsByID(req, res) {
-  const id = req.params.id;
-  res.status(200).json(await stores.findOne({ include: [Users], where: { id: id } }));
+  res.status(200).json(await stores.findAll({ include: [Users] , where: { id: req.session.storeID } }));
 }
 
 // get all of the store's receipts
 async function getAllReceipts(req, res) {
-  const id = req.params.id
-  res.status(200).json(await stores.findAll({ include: [receipts] , where : {id: id}}));
+  res.status(200).json(await stores.findAll({ include: [receipts] , where: { id: req.session.storeID }}));
 }
 
 module.exports = router;
