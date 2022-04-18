@@ -13,13 +13,23 @@ const productRoutes = require("./routes/products");
 const receiptRoutes = require("./routes/receiptes");
 const logger = require("./middlewares/logger");
 const Auth = require("../src/routes/auth");
+const app = express();
+// trying to implement socket.io
+const http = require("http");
+const server = http.createServer(app);
+const path = require("path");
+
+const { Server } = require("socket.io");
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  console.log(socket.id);
+});
 
 // The session part requirements
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const { db } = require("./model/index");
-
-const app = express();
 
 // Realted to session
 app.use(
@@ -46,16 +56,18 @@ app.use(productRoutes);
 app.use(receiptRoutes);
 app.use(logger);
 
+app.use(express.static(path.join(__dirname, "Public")));
+
 //routes
 app.get("/", home);
 
 //functions
 function home(req, res) {
-  res.send("home route");
+  res.sendFile(__dirname + "/Public/views" + "/index.html");
 }
 
 function start(port) {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Running on port ${port}`);
   });
 }

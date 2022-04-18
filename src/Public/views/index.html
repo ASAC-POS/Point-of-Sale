@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/style.css">
+    <title>POS 401 Project</title>
+    <script defer src="/../js/script.js" type="module"></script>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <h1>Home Page</h1>
+    <h3>Welcome to our magnificant POS system</h3>
+    <p>
+      The simplest, most reliable point of sale system.<br />
+      ASAC 2022 &copy; All rights reserved.
+    </p>
+    <div id="message-container"></div>
+    <form id="form">
+      <label for="message-input">Message</label>
+      <input type="text" id="message-input" />
+      <button type="submit" id="send-button">Send</button>
+      <label for="room-input">Room</label>
+      <input type="text" id="room-input" />
+      <button type="button" id="room-button">Join</button>
+    </from>
+
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io();
+</script>
+  </body>
+</html>
