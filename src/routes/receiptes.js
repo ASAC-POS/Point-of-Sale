@@ -110,7 +110,7 @@ async function getReceiptEmps(req, res) {
 //get one user receipt
 async function getReceiptEmpsByID(req, res) {
   const id = req.params.id;
-  res.status(200).json(await Users.findOne({ include: [receipts], where: {id: req.session.storeID  } }))
+  res.status(200).json(await Users.findOne({ include: [receipts], where: {storeID: req.session.storeID , id : id  } }))
 }
 
 module.exports = router;

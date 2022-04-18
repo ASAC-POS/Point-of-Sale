@@ -25,9 +25,6 @@ router.get("/storereceipts", bearerAuth, acl("read"), getAllReceipts);
 async function getStore(req, res) {
   const id = req.params.id;
   const found = await stores.findOne({ where: { id: id } })
-  console.log("lllllllllllllllllll" ,found)
-  console.log(req.session.storeID)
-  console.log(found.id)
   if(found.id === req.session.storeID){
   res.status(200).json(found);
   } else {

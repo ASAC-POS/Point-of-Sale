@@ -12,10 +12,10 @@ function validator(req, res, next) {
     );
   } else if (!emailRegex.test(req.body.email)) {
     next("Invalid email address");
-  // } else if (!passwordRegex.test(req.body.password)) {
-  //   next(
-  //     "Invalid password, must contain at least one letter small character, capital character, sympols and numbers and at least 6 characters long and not more than 16"
-  //   );
+  } else if (!passwordRegex.test(req.body.password)) {
+    next(
+      "Invalid password, must contain at least one letter small character, capital character, sympols and numbers and at least 6 characters long and not more than 16"
+    );
   } else {
     next();
   }

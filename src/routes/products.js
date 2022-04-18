@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 const bearerAuth = require('../middlewares/bearerAuth');
 const acl = require('../middlewares/acl');
-const { products, stores } = require('../model/index.js');
+const { products } = require('../model/index.js');
 const checkQuantity = require('../middlewares/checkquantity');
 
 //endpoits
@@ -17,8 +17,6 @@ router.get('/product/:id', bearerAuth, acl('read'), getProduct);
 router.put('/product/:id',bearerAuth,acl('update'),checkQuantity, updateProduct);
 //delete
 router.delete('/product/:id', bearerAuth, acl('remove'), deleteProduct);
-//get one store with the products associated with that store
-//router.get("/getProduct/:id", bearerAuth, acl("read"), getproductEmpsByID);
 
 // get all products of a specific store
 router.get('/products', bearerAuth, acl('read'), getAllProducts);
@@ -78,22 +76,12 @@ async function deleteProduct(req, res) {
   }
 }
 
-//get one store products
-/*async function getproductEmpsByID(req, res) {
-  const id = req.params.id;
-  res
-    .status(200)
-    .json(await stores.findOne({ include: [products], where: { id: id } }));
-}*/
 
 // get all products of a store
 // This will retrieve the products for only the store of the signed in user
-
 async function getAllProducts(req, res) {
   // const sessionStoreID = ;
-  res
-    .status(200)
-    .json(await products.findAll({ where: { storeID: req.session.storeID } }));
+  res.status(200).json(await products.findAll({ where: { storeID: req.session.storeID } }));
 }
 
 module.exports = router;

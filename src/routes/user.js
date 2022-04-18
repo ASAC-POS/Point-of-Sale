@@ -53,7 +53,7 @@ async function updateUser(req, res) {
       reqBody.password = await bcrypt.hash(reqBody.password, 5);
     }
     await Users.update(reqBody, { where: { id: id } })
-    const updatedUser = Users.findOne({ where: {id:id}});
+    const updatedUser = await Users.findOne({ where: {id:id}});
     res.status(201).json({updatedUser:updatedUser, message: `user with id: ${id} was updated successfully`});
   } else {
     res.status(403).send("Unauthorized access");
