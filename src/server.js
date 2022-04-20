@@ -34,6 +34,7 @@ io.on("connection", (socket) => {
      role: ${addedUser.role},
       ID: ${addedUser.id}`;
     popUpMessage="New user was added ==> " + outputStr;
+    console.log(popUpMessage);
   });
 
   // Deleting a user notification
@@ -79,8 +80,14 @@ io.on("connection", (socket) => {
     });
     const outputStr = `Products sold:- ${products}`;
 
-    console.log("A Cashier Sold some items ==> " + outputStr);
+    popUpMessage="A Cashier Sold some items ==> " + outputStr;
   });
+
+  //a new signin
+  socket.on('sign-in',(payload)=>{
+    const outputStr= `user name : ${payload.username}`
+    popUpMessage=`${outputStr} signed in`;
+  })
 });
 
 ////////////////////////////

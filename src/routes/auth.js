@@ -59,7 +59,8 @@ async function signup(req, res) {
 // function sign in
 async function signin(req, res) {
   // saving the storeID in the session after a successfull sign-in
-  io.connect(host);
+  const socket = io.connect(host);
+  socket.emit('sign-in',req.user);
   req.session.storeID = req.user.storeID;
   res.status(201).send(req.user);
 }
