@@ -13,13 +13,80 @@ const productRoutes = require("./routes/products");
 const receiptRoutes = require("./routes/receiptes");
 const logger = require("./middlewares/logger");
 const Auth = require("../src/routes/auth");
+const app = express();
+
+//Implement socket.io
+
+const http = require("http");
+const server = http.createServer(app);
+// const path = require("path");
+
+const io = require("socket.io")(server, process.env.PORT);
+
+io.on("connection", (socket) => {
+  console.log(`Socket ID: ${socket.id}`);
+
+  // Adding new user notification
+  socket.on("add-user", (addedUser) => {
+    const outputStr = `username: ${addedUser.username},
+     role: ${addedUser.role},
+      ID: ${addedUser.id}`;
+    console.log("New user was added ==> " + outputStr);
+  });
+
+  // Deleting a user notification
+  socket.on("delete-user", (deletedUser) => {
+    const outputStr = `username: ${deletedUser.username},
+    role: ${deletedUser.role},
+    ID: ${deletedUser.id}`;
+
+    console.log("A user was deleted  ==> " + outputStr);
+  });
+
+  // Adding new product notification
+  socket.on("add-product", (addedproduct) => {
+    const outputStr = `product name: ${addedproduct.productName}, 
+    Quantity: ${addedproduct.quantity},
+    minimum quantity: ${addedproduct.minQuantity}`;
+
+    console.log("A new product was added ==> " + outputStr);
+  });
+
+  // Deleting a product notification
+  socket.on("delete-product", (product) => {
+    const outputStr = `product name: ${product.productName}, 
+    Quantity: ${product.quantity}`;
+
+    console.log("A product was deleted  ==> " + outputStr);
+  });
+
+  // Adding a new receipt
+  socket.on("add-receipt", (receipt) => {
+    let products = "";
+    receipt.product.forEach((element, i) => {
+      products +=
+        i +
+        1 +
+        "-" +
+        "product name: " +
+        element.productName +
+        " " +
+        "Quantity: " +
+        element.quantity +
+        "  ";
+    });
+    const outputStr = `Products sold:- ${products}`;
+
+    console.log("A Cashier Sold some items ==> " + outputStr);
+  });
+});
+
+////////////////////////////
 
 // The session part requirements
 const session = require("express-session");
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const { db } = require("./model/index");
-
-const app = express();
 
 // Realted to session
 app.use(
@@ -46,16 +113,19 @@ app.use(productRoutes);
 app.use(receiptRoutes);
 app.use(logger);
 
+// app.use(express.static(path.join(__dirname, "Public")));
+
 //routes
 app.get("/", home);
 
 //functions
 function home(req, res) {
-  res.send("home route");
+  // res.sendFile(__dirname + "/Public/views" + "/index.html");
+  res.status(200).send("home route");
 }
 
 function start(port) {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Running on port ${port}`);
   });
 }

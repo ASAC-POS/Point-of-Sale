@@ -8,6 +8,15 @@ const acl = require("../middlewares/acl");
 const { Users } = require("../model/index");
 const bcrypt = require("bcrypt");
 
+///
+
+const io = require("socket.io-client");
+const host = `http://localhost:${process.env.PORT}`;
+
+const socket = io.connect(host);
+
+///
+
 //endpoints
 //post
 router.post("/user", bearerAuth, acl("create"), addUser); // only the admin user can create new users
@@ -27,6 +36,8 @@ async function addUser(req, res) {
   reqBody.password = await bcrypt.hash(reqBody.password, 5);
   reqBody.storeID = req.session.storeID;
   const addedUser = await Users.create(reqBody);
+
+  socket.emit("add-user", addedUser);
 
   res.status(201).json(addedUser);
 }
@@ -52,9 +63,12 @@ async function updateUser(req, res) {
     if (reqBody.password !== oldPass.password) {
       reqBody.password = await bcrypt.hash(reqBody.password, 5);
     }
-    await Users.update(reqBody, { where: { id: id } })
-    const updatedUser = await Users.findOne({ where: {id:id}});
-    res.status(201).json({updatedUser:updatedUser, message: `user with id: ${id} was updated successfully`});
+    await Users.update(reqBody, { where: { id: id } });
+    const updatedUser = await Users.findOne({ where: { id: id } });
+    res.status(201).json({
+      updatedUser: updatedUser,
+      message: `user with id: ${id} was updated successfully`,
+    });
   } else {
     res.status(403).send("Unauthorized access");
   }
@@ -66,13 +80,20 @@ async function deleteUser(req, res) {
   const deletedUser = await Users.findOne({ where: { id } });
   if (deletedUser.storeID === req.session.storeID) {
     await Users.destroy({ where: { id: id } });
-    res.status(200).json({message: `user with id: ${id} was deleted successfully`});
+
+    socket.emit("delete-user", deletedUser);
+
+    res
+      .status(200)
+      .json({ message: `user with id: ${id} was deleted successfully` });
   } else res.status(403).send("Unauthorized access");
 }
 
 // Get all of the sotre users
 async function getAllusers(req, res) {
-  res.status(200).json(await Users.findAll({ where: { storeID: req.session.storeID } }));
+  res
+    .status(200)
+    .json(await Users.findAll({ where: { storeID: req.session.storeID } }));
 }
 
 module.exports = router;
