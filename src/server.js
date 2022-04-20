@@ -14,6 +14,8 @@ const receiptRoutes = require("./routes/receiptes");
 const logger = require("./middlewares/logger");
 const Auth = require("../src/routes/auth");
 const app = express();
+const bearer = require("./middlewares/bearerAuth");
+const acl = require('./middlewares/acl')
 
 //Implement socket.io
 
@@ -22,7 +24,7 @@ const server = http.createServer(app);
 // const path = require("path");
 
 const io = require("socket.io")(server, process.env.PORT);
-
+let popUpMessage;
 io.on("connection", (socket) => {
   console.log(`Socket ID: ${socket.id}`);
 
@@ -31,7 +33,7 @@ io.on("connection", (socket) => {
     const outputStr = `username: ${addedUser.username},
      role: ${addedUser.role},
       ID: ${addedUser.id}`;
-    console.log("New user was added ==> " + outputStr);
+    popUpMessage="New user was added ==> " + outputStr;
   });
 
   // Deleting a user notification
@@ -40,7 +42,7 @@ io.on("connection", (socket) => {
     role: ${deletedUser.role},
     ID: ${deletedUser.id}`;
 
-    console.log("A user was deleted  ==> " + outputStr);
+    popUpMessage="A user was deleted  ==> " + outputStr;
   });
 
   // Adding new product notification
@@ -49,7 +51,7 @@ io.on("connection", (socket) => {
     Quantity: ${addedproduct.quantity},
     minimum quantity: ${addedproduct.minQuantity}`;
 
-    console.log("A new product was added ==> " + outputStr);
+    popUpMessage="A new product was added ==> " + outputStr;
   });
 
   // Deleting a product notification
@@ -57,7 +59,7 @@ io.on("connection", (socket) => {
     const outputStr = `product name: ${product.productName}, 
     Quantity: ${product.quantity}`;
 
-    console.log("A product was deleted  ==> " + outputStr);
+    popUpMessage="A product was deleted  ==> " + outputStr;
   });
 
   // Adding a new receipt
@@ -117,11 +119,18 @@ app.use(logger);
 
 //routes
 app.get("/", home);
-
+app.get("/popup",bearer,acl('read'),popUp);
 //functions
 function home(req, res) {
   // res.sendFile(__dirname + "/Public/views" + "/index.html");
   res.status(200).send("home route");
+}
+function popUp(req,res){
+  if(popUpMessage){
+    res.send(popUpMessage);
+  }else{
+    res.send('no popups')
+  }
 }
 
 function start(port) {
