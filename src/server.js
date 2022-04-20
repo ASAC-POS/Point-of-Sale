@@ -22,7 +22,7 @@ const server = http.createServer(app);
 // const path = require("path");
 
 const io = require("socket.io")(server, process.env.PORT);
-
+let popUpMessage;
 io.on("connection", (socket) => {
   console.log(`Socket ID: ${socket.id}`);
 
@@ -31,7 +31,7 @@ io.on("connection", (socket) => {
     const outputStr = `username: ${addedUser.username},
      role: ${addedUser.role},
       ID: ${addedUser.id}`;
-    console.log("New user was added ==> " + outputStr);
+    popUpMessage="New user was added ==> " + outputStr;
   });
 
   // Deleting a user notification
@@ -117,11 +117,18 @@ app.use(logger);
 
 //routes
 app.get("/", home);
-
+app.get("/popup",popUp);
 //functions
 function home(req, res) {
   // res.sendFile(__dirname + "/Public/views" + "/index.html");
   res.status(200).send("home route");
+}
+function popUp(req,res){
+  if(popUpMessage){
+    res.send(popUpMessage);
+  }else{
+    res.send('no popups')
+  }
 }
 
 function start(port) {
