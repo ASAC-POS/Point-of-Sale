@@ -17,7 +17,7 @@ router.delete("/store/:id", bearerAuth, acl("delete"), deleteStore); //only the 
 //get
 router.get("/storeEmps", bearerAuth, acl("read"), getStoreEmps); // this won't be needed, or can be given to a super previledged user (site owner) ()
 // get all the store's receipts
-router.get("/storereceipts", bearerAuth, acl("read"), getAllReceipts);
+router.get("/storeReceipts", bearerAuth, acl("read"), getAllReceipts);
 
 //functions
 
@@ -41,8 +41,9 @@ async function updateStore(req, res) {
     const reqBody = req.body;
     reqBody.id = req.session.storeID
     await stores.update(reqBody, { where: { id: id } });
-    const updateStore = stores.findOne({where: {id : id}})
-    res.status(201).json({updateStore: updateStore , message: `store with id: ${id} was updated successfully`});
+    const updatedStore = await stores.findOne({where: {id : id}})
+    console.log(updatedStore)
+    res.status(201).json({updatedStore: updatedStore , message: `store with id: ${id} was updated successfully`});
   }
   else {
     res.status(403).json('Unauthorized access');

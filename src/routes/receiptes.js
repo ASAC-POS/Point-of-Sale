@@ -111,7 +111,7 @@ async function deleteReceipt(req, res) {
 async function getReceiptEmps(req, res) {
   const receiptsEmps = await Users.findAll({
     include: [receipts],
-    where: { id: req.session.storeID },
+    where: { storeID: req.session.storeID },
   });
   res.status(200).json(receiptsEmps);
 }

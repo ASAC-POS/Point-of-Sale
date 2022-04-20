@@ -10,6 +10,6 @@ const { db } = require("./src/model/index");
 
 db.sync()
   .then(() => {
-    server.start(process.env.PORT || 3001);
+    server.start(process.env.PORT);
   })
   .catch(console.error);
