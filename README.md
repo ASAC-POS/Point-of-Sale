@@ -10,10 +10,10 @@
 
 ## routes
 
-- /register
+- **/register**
 
   - method: post
-    - bodyExample :
+  - body :
 
   ```json
   {
@@ -26,10 +26,67 @@
   }
   ```
 
-- /user
+  - response:
+
+  ```json
+  {
+    "actions": [
+      "read",
+      "create",
+      "update",
+      "delete",
+      "add",
+      "remove",
+      "edit",
+      "sell"
+    ],
+    "id": 1,
+    "username": "admin",
+    "password": "$2b$05$Acy2f/RAa1w02H6HckV/UeGFc3uLCZ4tKdCQaGTRDH4GY3YX2NOVu",
+    "role": "admin",
+    "storeID": 1,
+    "updatedAt": "2022-04-20T17:38:50.241Z",
+    "createdAt": "2022-04-20T17:38:50.241Z"
+  }
+  ```
+
+- **/singin**
 
   - method : post
-    - bodyExample:
+  - headers:
+    `basic auth: username::password`
+  - response:
+
+  ```json
+  {
+    "actions": [
+      "read",
+      "create",
+      "update",
+      "delete",
+      "add",
+      "remove",
+      "edit",
+      "sell"
+    ],
+    "id": 1,
+    "username": "admin",
+    "password": "$2b$05$Acy2f/RAa1w02H6HckV/UeGFc3uLCZ4tKdCQaGTRDH4GY3YX2NOVu",
+    "role": "admin",
+    "storeID": 1,
+    "createdAt": "2022-04-20T17:38:50.241Z",
+    "updatedAt": "2022-04-20T17:38:50.241Z",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjUwNDc2NTQ0fQ.oUMdaKsnWs0gN63vgy_TJNiBoukQVKT7CHPXM2OPjP4"
+  }
+  ```
+
+  - cookies.si : `s%3AhZHEDmOmRPLIytv54Cydm1S1yRRwojhG.lkOaeBuxpXhkNrT40Q9eUI7M1bO0vNxeExloazA%2FdtI`
+
+- **/user**
+
+  - method : post
+  - cookies.si : `s%3AhZHEDmOmRPLIytv54Cydm1S1yRRwojhG.lkOaeBuxpXhkNrT40Q9eUI7M1bO0vNxeExloazA%2FdtI`
+  - body:
 
   ```json
   {
@@ -39,18 +96,672 @@
   }
   ```
 
-- /user/:id
-
-  - method: get
-    - response:
+  - response:
 
   ```json
   {
-    "id": "2",
-    "username": "cashier",
-    "password": "hash"
+    "actions": ["read", "update", "sell"],
+    "id": 2,
+    "username": "cashierzara",
+    "password": "$2b$05$UG4FcjC1kNZw51gJIzW0Lu2uJ5bXdURG34xVFnnNO.fNirh40hfiC",
+    "role": "cashier",
+    "storeID": 1,
+    "updatedAt": "2022-04-20T17:54:15.651Z",
+    "createdAt": "2022-04-20T17:54:15.651Z"
   }
   ```
+
+- **/user/:id**
+
+  - method: get
+
+    - cookies.si : `s%3AhZHEDmOmRPLIytv54Cydm1S1yRRwojhG.lkOaeBuxpXhkNrT40Q9eUI7M1bO0vNxeExloazA%2FdtI`
+    - response:
+
+    ```json
+    {
+      "actions": [
+        "read",
+        "create",
+        "update",
+        "delete",
+        "add",
+        "remove",
+        "edit",
+        "sell"
+      ],
+      "id": 1,
+      "username": "admin",
+      "password": "$2b$05$Acy2f/RAa1w02H6HckV/UeGFc3uLCZ4tKdCQaGTRDH4GY3YX2NOVu",
+      "role": "admin",
+      "storeID": 1,
+      "createdAt": "2022-04-20T17:38:50.241Z",
+      "updatedAt": "2022-04-20T17:38:50.241Z"
+    }
+    ```
+
+  - method: put
+
+    - body:
+
+    ```json
+    {
+      "username": "cashier",
+      "password": "c@sHier123",
+      "role": "cashier"
+    }
+    ```
+
+    - response:
+
+    ```json
+    {
+      "updatedUser": {
+        "actions": ["read", "update", "sell"],
+        "id": 2,
+        "username": "cashierzara",
+        "password": "$2b$05$R2iqWq8QwIFseP/OUvp5MeivX0KyCJnBvRwZt5vYeqCT/er5yQU4q",
+        "role": "cashier",
+        "storeID": 1,
+        "createdAt": "2022-04-20T17:54:15.651Z",
+        "updatedAt": "2022-04-20T18:01:14.231Z"
+      },
+      "message": "user with id: 2 was updated successfully"
+    }
+    ```
+
+  - method: delete
+
+    - response:
+
+    ```json
+    {
+      "message": "user with id: 2 was deleted successfully"
+    }
+    ```
+
+- **/users**
+
+  - method: get
+  - response:
+
+  ```json
+  [
+    {
+      "actions": [
+        "read",
+        "create",
+        "update",
+        "delete",
+        "add",
+        "remove",
+        "edit",
+        "sell"
+      ],
+      "id": 1,
+      "username": "admin",
+      "password": "$2b$05$Acy2f/RAa1w02H6HckV/UeGFc3uLCZ4tKdCQaGTRDH4GY3YX2NOVu",
+      "role": "admin",
+      "storeID": 1,
+      "createdAt": "2022-04-20T17:38:50.241Z",
+      "updatedAt": "2022-04-20T17:38:50.241Z"
+    },
+    {
+      "actions": ["read", "update", "sell"],
+      "id": 3,
+      "username": "cashierzara",
+      "password": "$2b$05$vG5y2w92iIRJRWK/OCRjCOZ9CDF17AK0VmaTOI4El8B.9bm/T.NnC",
+      "role": "cashier",
+      "storeID": 1,
+      "createdAt": "2022-04-20T18:10:57.268Z",
+      "updatedAt": "2022-04-20T18:10:57.268Z"
+    }
+  ]
+  ```
+
+- **/product**
+
+  - method: post
+  - body:
+
+  ```json
+  {
+    "productName": "t-shirt blue",
+    "description": "a blue t-shir with logo",
+    "quantity": "20",
+    "price": "13",
+    "minQuantity": "10"
+  }
+  ```
+
+  - response:
+
+  ```json
+  {
+    "id": 1,
+    "productName": "t-shirt blue",
+    "description": "a blue t-shir with logo",
+    "quantity": 20,
+    "price": 13,
+    "minQuantity": 10,
+    "storeID": 1,
+    "updatedAt": "2022-04-20T18:14:51.062Z",
+    "createdAt": "2022-04-20T18:14:51.062Z"
+  }
+  ```
+
+- **/products**
+
+  - method: get
+  - body:
+
+  ```json
+  [
+    {
+      "id": 1,
+      "productName": "t-shirt blue",
+      "quantity": 20,
+      "description": "a blue t-shir with logo",
+      "price": 13,
+      "minQuantity": 10,
+      "storeID": 1,
+      "createdAt": "2022-04-20T18:14:51.062Z",
+      "updatedAt": "2022-04-20T18:14:51.062Z"
+    },
+    {
+      "id": 2,
+      "productName": "shoes black",
+      "quantity": 20,
+      "description": "black shoes goes with everything",
+      "price": 13,
+      "minQuantity": 10,
+      "storeID": 1,
+      "createdAt": "2022-04-20T18:23:37.702Z",
+      "updatedAt": "2022-04-20T18:23:37.702Z"
+    }
+  ]
+  ```
+
+- **/product/:id**
+
+  - method: put
+
+    - body:
+
+    ```json
+    {
+      "productName": "shoes black",
+      "description": "black shoes goes with everything",
+      "quantity": "15",
+      "price": "13",
+      "minQuantity": "10"
+    }
+    ```
+
+    - response:
+
+    ```json
+    {
+      "product": {
+        "id": 1,
+        "productName": "shoes black",
+        "quantity": 15,
+        "description": "black shoes goes with everything",
+        "price": 13,
+        "minQuantity": 10,
+        "storeID": 1,
+        "createdAt": "2022-04-20T18:14:51.062Z",
+        "updatedAt": "2022-04-20T18:26:00.792Z"
+      },
+      "message": "product with product id: 1 was updated successfully"
+    }
+    ```
+
+  - method: get
+
+    - body:
+
+    ```json
+    {
+      "id": 2,
+      "productName": "shoes black",
+      "quantity": 20,
+      "description": "black shoes goes with everything",
+      "price": 13,
+      "minQuantity": 10,
+      "storeID": 1,
+      "createdAt": "2022-04-20T18:23:37.702Z",
+      "updatedAt": "2022-04-20T18:23:37.702Z"
+    }
+    ```
+
+  - method: delete
+
+    - body:
+
+    ```json
+    {
+      "message": "product with id: 2 was deleted successfully"
+    }
+    ```
+
+- **/receipt**
+
+  - method: post
+  - body:
+
+  ```json
+  {
+    "product": [
+      { "productName": "shoes black", "quantity": "2", "productID": "1" }
+    ],
+    "userID": "3",
+    "PaymentMethod": "cash",
+    "total": "30",
+    "discount": "50"
+  }
+  ```
+
+  - response:
+
+  ```json
+  {
+    "id": 1,
+    "product": [
+      {
+        "productName": "shoes black",
+        "quantity": "2",
+        "productID": "1"
+      }
+    ],
+    "userID": 3,
+    "PaymentMethod": "cash",
+    "total": 30,
+    "discount": 50,
+    "totalAfterDiscount": 15,
+    "storeID": 1,
+    "updatedAt": "2022-04-20T18:46:58.012Z",
+    "createdAt": "2022-04-20T18:46:58.012Z"
+  }
+  ```
+
+- **/receipt/:id**
+
+  - method: put
+
+    - body:
+
+    ```json
+    {
+      "product": [
+        { "productName": "shoes black", "quantity": "2", "productID": "1" }
+      ],
+      "userID": "1",
+      "PaymentMethod": "cash",
+      "total": "30",
+      "discount": "50"
+    }
+    ```
+
+    - response:
+
+    ```json
+    {
+      "receipt": {
+        "id": 1,
+        "product": [
+          {
+            "productName": "shoes black",
+            "quantity": "2",
+            "productID": "1"
+          }
+        ],
+        "userID": 1,
+        "storeID": 1,
+        "PaymentMethod": "cash",
+        "total": 30,
+        "discount": 50,
+        "totalAfterDiscount": 15,
+        "createdAt": "2022-04-20T18:46:58.012Z",
+        "updatedAt": "2022-04-20T18:51:04.854Z"
+      },
+      "message": "receipt with receipt id: 1 was updated successfully"
+    }
+    ```
+
+  - method: delete
+
+    - response:
+
+    ```json
+    {
+      "message": "receipt with id: 2 was deleted successfully"
+    }
+    ```
+
+- **/getReceipt**
+
+  - method: get
+  - response:
+
+  ```json
+  [
+    {
+      "actions": [
+        "read",
+        "create",
+        "update",
+        "delete",
+        "add",
+        "remove",
+        "edit",
+        "sell"
+      ],
+      "id": 1,
+      "username": "admin",
+      "password": "$2b$05$Acy2f/RAa1w02H6HckV/UeGFc3uLCZ4tKdCQaGTRDH4GY3YX2NOVu",
+      "role": "admin",
+      "storeID": 1,
+      "createdAt": "2022-04-20T17:38:50.241Z",
+      "updatedAt": "2022-04-20T17:38:50.241Z",
+      "receipts": [
+        {
+          "id": 1,
+          "product": [
+            {
+              "productName": "shoes black",
+              "quantity": "2",
+              "productID": "1"
+            }
+          ],
+          "userID": 1,
+          "storeID": 1,
+          "PaymentMethod": "cash",
+          "total": 30,
+          "discount": 50,
+          "totalAfterDiscount": 15,
+          "createdAt": "2022-04-20T18:46:58.012Z",
+          "updatedAt": "2022-04-20T18:51:04.854Z"
+        },
+        {
+          "id": 3,
+          "product": [
+            {
+              "productName": "shoes black",
+              "quantity": "3",
+              "productID": "1"
+            }
+          ],
+          "userID": 1,
+          "storeID": 1,
+          "PaymentMethod": "cash",
+          "total": 45,
+          "discount": 50,
+          "totalAfterDiscount": 22.5,
+          "createdAt": "2022-04-20T18:54:40.373Z",
+          "updatedAt": "2022-04-20T18:54:40.373Z"
+        }
+      ]
+    },
+    {
+      "actions": ["read", "update", "sell"],
+      "id": 3,
+      "username": "cashierzara",
+      "password": "$2b$05$vG5y2w92iIRJRWK/OCRjCOZ9CDF17AK0VmaTOI4El8B.9bm/T.NnC",
+      "role": "cashier",
+      "storeID": 1,
+      "createdAt": "2022-04-20T18:10:57.268Z",
+      "updatedAt": "2022-04-20T18:10:57.268Z",
+      "receipts": [
+        {
+          "id": 4,
+          "product": [
+            {
+              "productName": "shoes black",
+              "quantity": "1",
+              "productID": "1"
+            }
+          ],
+          "userID": 3,
+          "storeID": 1,
+          "PaymentMethod": "cash",
+          "total": 15,
+          "discount": 50,
+          "totalAfterDiscount": 7.5,
+          "createdAt": "2022-04-20T19:01:43.792Z",
+          "updatedAt": "2022-04-20T19:01:43.792Z"
+        }
+      ]
+    }
+  ]
+  ```
+
+- **getReceipt/:id**
+
+  - method : get
+  - response:
+
+  ```json
+  {
+    "actions": ["read", "update", "sell"],
+    "id": 3,
+    "username": "cashierzara",
+    "password": "$2b$05$vG5y2w92iIRJRWK/OCRjCOZ9CDF17AK0VmaTOI4El8B.9bm/T.NnC",
+    "role": "cashier",
+    "storeID": 1,
+    "createdAt": "2022-04-20T18:10:57.268Z",
+    "updatedAt": "2022-04-20T18:10:57.268Z",
+    "receipts": [
+      {
+        "id": 4,
+        "product": [
+          {
+            "productName": "shoes black",
+            "quantity": "1",
+            "productID": "1"
+          }
+        ],
+        "userID": 3,
+        "storeID": 1,
+        "PaymentMethod": "cash",
+        "total": 15,
+        "discount": 50,
+        "totalAfterDiscount": 7.5,
+        "createdAt": "2022-04-20T19:01:43.792Z",
+        "updatedAt": "2022-04-20T19:01:43.792Z"
+      }
+    ]
+  }
+  ```
+
+- **/store/:id**
+
+  - method: put
+
+    - body:
+
+    ```json
+    {
+      "storename": "zara",
+      "email": "zara@example.com",
+      "location": "amman",
+      "businessType": "retail"
+    }
+    ```
+
+    - response :
+
+    ```json
+    {
+      "updatedStore": {
+        "id": 1,
+        "storename": "zara",
+        "email": "zara@example.com",
+        "location": "amman",
+        "businessType": "retail",
+        "createdAt": "2022-04-20T17:38:50.209Z",
+        "updatedAt": "2022-04-20T19:13:04.525Z"
+      },
+      "message": "store with id: 1 was updated successfully"
+    }
+    ```
+
+  - method: get
+
+    - response:
+
+    ```json
+    {
+      "id": 1,
+      "storename": "zara",
+      "email": "zara@example.com",
+      "location": "amman",
+      "businessType": "retail",
+      "createdAt": "2022-04-20T17:38:50.209Z",
+      "updatedAt": "2022-04-20T19:13:04.525Z"
+    }
+    ```
+
+  - method: delete
+
+    - response :
+
+    ```json
+    {
+      "message": "store with id: 2 was deleted successfully"
+    }
+    ```
+
+- **/storeReceipts**
+
+  - method: get
+  - response:
+
+  ```json
+  [
+    {
+      "id": 1,
+      "storename": "zara",
+      "email": "zara@example.com",
+      "location": "amman",
+      "businessType": "retail",
+      "createdAt": "2022-04-20T17:38:50.209Z",
+      "updatedAt": "2022-04-20T19:13:04.525Z",
+      "receipts": [
+        {
+          "id": 1,
+          "product": [
+            {
+              "productName": "shoes black",
+              "quantity": "2",
+              "productID": "1"
+            }
+          ],
+          "userID": 1,
+          "storeID": 1,
+          "PaymentMethod": "cash",
+          "total": 30,
+          "discount": 50,
+          "totalAfterDiscount": 15,
+          "createdAt": "2022-04-20T18:46:58.012Z",
+          "updatedAt": "2022-04-20T18:51:04.854Z"
+        },
+        {
+          "id": 3,
+          "product": [
+            {
+              "productName": "shoes black",
+              "quantity": "3",
+              "productID": "1"
+            }
+          ],
+          "userID": 1,
+          "storeID": 1,
+          "PaymentMethod": "cash",
+          "total": 45,
+          "discount": 50,
+          "totalAfterDiscount": 22.5,
+          "createdAt": "2022-04-20T18:54:40.373Z",
+          "updatedAt": "2022-04-20T18:54:40.373Z"
+        },
+        {
+          "id": 4,
+          "product": [
+            {
+              "productName": "shoes black",
+              "quantity": "1",
+              "productID": "1"
+            }
+          ],
+          "userID": 3,
+          "storeID": 1,
+          "PaymentMethod": "cash",
+          "total": 15,
+          "discount": 50,
+          "totalAfterDiscount": 7.5,
+          "createdAt": "2022-04-20T19:01:43.792Z",
+          "updatedAt": "2022-04-20T19:01:43.792Z"
+        }
+      ]
+    }
+  ]
+  ```
+
+- **/storeEmps**
+
+  - method: get
+  - response
+
+  ```json
+  [
+    {
+      "id": 1,
+      "storename": "zara",
+      "email": "zara@example.com",
+      "location": "amman",
+      "businessType": "retail",
+      "createdAt": "2022-04-20T17:38:50.209Z",
+      "updatedAt": "2022-04-20T19:13:04.525Z",
+      "users": [
+        {
+          "actions": [
+            "read",
+            "create",
+            "update",
+            "delete",
+            "add",
+            "remove",
+            "edit",
+            "sell"
+          ],
+          "id": 1,
+          "username": "admin",
+          "password": "$2b$05$Acy2f/RAa1w02H6HckV/UeGFc3uLCZ4tKdCQaGTRDH4GY3YX2NOVu",
+          "role": "admin",
+          "storeID": 1,
+          "createdAt": "2022-04-20T17:38:50.241Z",
+          "updatedAt": "2022-04-20T17:38:50.241Z"
+        },
+        {
+          "actions": ["read", "update", "sell"],
+          "id": 3,
+          "username": "cashierzara",
+          "password": "$2b$05$vG5y2w92iIRJRWK/OCRjCOZ9CDF17AK0VmaTOI4El8B.9bm/T.NnC",
+          "role": "cashier",
+          "storeID": 1,
+          "createdAt": "2022-04-20T18:10:57.268Z",
+          "updatedAt": "2022-04-20T18:10:57.268Z"
+        }
+      ]
+    }
+  ]
+  ```
+
+- **/popup**
+  - method: get
+  - response:
+    - user sing in: `user name : cashierzara has sign in`
+    - new user created: `New user was added ==> username: cashierzara6, role: cashier, ID: 9`
 
 ## Wireframe
 
@@ -78,6 +789,7 @@
     - /product/:id, methods: put, delete, get
 
 - Users page
+
   - ![users](./assets/pointOfSaleImages/userpage.png)
   - API paths used:
     - /user, method: post
@@ -86,6 +798,7 @@
     - /user/:id, methods: put, delete, get
 
 - Receipts page
+
   - ![receipts](./assets/pointOfSaleImages/receiptspage%20.png)
   - API paths used:
     - /getReceipt, method: get
