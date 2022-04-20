@@ -49,30 +49,47 @@
 
 - home page
 
-  - ![hompage](./assets/pointOfSaleImages/homepage.png)
+  - ![hompage](./assets/pointOfSaleimages/homepage.png)
   - API paths used: /register, method: post
 
 - Sign in page
 
-  - ![sigin in](./assets//pointOfSaleImages/signinpage.png)
+  - ![sigin in](./assets/pointOfSaleimages/signinpage.png)
   - API paths used: /signin, method: post
 
 - store page
 
-  - ![store home page](./assets/pointOfSaleImages/storeprofileadmin.png)
+  - ![store home page admin](./assets/pointOfSaleimages/storeprofileadmin.png)
   - API paths used: /store/id, method: post
 
-- product page
+- store page cashier 
 
-  - ![product](./assets/pointOfSaleImages/productpage.png)
+  - ![cashire home page](./assets/pointOfSaleimages/storeprofilecashier.png)
+  - API paths used: /store/id, method: post
+
+- store page inventory  
+
+  - ![cashire home page](./assets/pointOfSaleimages/storeprofileinventory.png)
+  - API paths used: /store/id, method: post
+
+- product page for admin
+
+  - ![product](./assets/pointOfSaleimages/productpage.png)
   - API paths used:
     - /products, method: get
     - /product, method: post
     - /product/:id, methods: put, delete, get
 
+- POS for cashier (products page)
+  - ![point of sale page](./assets/pointOfSaleimages/pointofsalepage.png)
+  - API paths used:
+    - /products, method: get
+    - /product/:id, method: get
+    - /receipt, method: post
+
 - Users page
 
-  - ![users](./assets/pointOfSaleImages/userpage.png)
+  - ![users](./assets/pointOfSaleimages/userpage.png)
   - API paths used:
     - /user, method: post
     - /storeEmps, method: get
@@ -81,18 +98,13 @@
 
 - Receipts page
 
-  - ![receipts](./assets/pointOfSaleImages/receiptspage%20.png)
+  - ![receipts](./assets/pointOfSaleimages/receiptspage.png)
   - API paths used:
     - /getReceipt, method: get
     - /getReceipt/:id , method: get
     - /receipt/:id, method: delete, put, get
 
-- POS for cashier (products page)
-  - ![point of sale page](./assets/pointOfSaleImages/pointofsalepage.png)
-  - API paths used:
-    - /products, method: get
-    - /product/:id, method: get, put
-    - /receipt, method: post
+
 
 ## Database
 
