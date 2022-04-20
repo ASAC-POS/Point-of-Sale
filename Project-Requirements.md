@@ -2,7 +2,7 @@
 
 ## Project name
 
-**Point of sale**
+- **Point of sale**
 
 1. Summary of idea.
     - To have a point of sale system with inventory management.
