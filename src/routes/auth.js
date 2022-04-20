@@ -15,6 +15,19 @@ const validator = require("../middlewares/validator");
 
 const Auth = express.Router();
 
+///////
+const io = require("socket.io-client");
+const host = `http://localhost:${process.env.PORT}`;
+// const socketServer = io.connect(host);
+
+// // socketServer.on("connection");
+
+// socketServer.on("connect_error", (err) => {
+//   console.log(`connect_error due to ${err.message}`);
+// });
+
+///////
+
 //routes
 Auth.post("/register", validator, signup);
 Auth.post("/signin", basicAuth, signin);
@@ -46,6 +59,7 @@ async function signup(req, res) {
 // function sign in
 async function signin(req, res) {
   // saving the storeID in the session after a successfull sign-in
+  io.connect(host);
   req.session.storeID = req.user.storeID;
   res.status(201).send(req.user);
 }

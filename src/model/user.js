@@ -71,9 +71,9 @@ const user = (sequelize, DataTypes) => {
       type: DataTypes.VIRTUAL,
     },
     storeID: {
-     type: DataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       //allowNull: false,
-   },
+    },
   });
 
   //basic function
@@ -115,4 +115,3 @@ const user = (sequelize, DataTypes) => {
 };
 
 module.exports = user;
-
