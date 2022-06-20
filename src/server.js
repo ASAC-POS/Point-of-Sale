@@ -30,41 +30,60 @@ io.on("connection", (socket) => {
 
   // Adding new user notification
   socket.on("add-user", (addedUser) => {
+    try{
     const outputStr = `username: ${addedUser.username},
      role: ${addedUser.role},
       ID: ${addedUser.id}`;
     popUpMessage="New user was added ==> " + outputStr;
-    console.log(popUpMessage);
+    console.log(popUpMessage);}
+    catch (e) {
+      console.log("Exception thrown in adding user notification, e: " + e);
+    }
+    
   });
 
   // Deleting a user notification
   socket.on("delete-user", (deletedUser) => {
+    try{
     const outputStr = `username: ${deletedUser.username},
     role: ${deletedUser.role},
     ID: ${deletedUser.id}`;
 
-    popUpMessage="A user was deleted  ==> " + outputStr;
+    popUpMessage="A user was deleted  ==> " + outputStr;}
+    catch (e) {
+      console.log("Exception thrown in deleting a user notification, e: " + e);
+    }
   });
 
   // Adding new product notification
   socket.on("add-product", (addedproduct) => {
+    try{
     const outputStr = `product name: ${addedproduct.productName}, 
     Quantity: ${addedproduct.quantity},
     minimum quantity: ${addedproduct.minQuantity}`;
 
     popUpMessage="A new product was added ==> " + outputStr;
+    }
+    catch (e) {
+      console.log("Exception thrown in addind new product notification, e: " + e);
+    }
   });
 
   // Deleting a product notification
   socket.on("delete-product", (product) => {
+    try{
     const outputStr = `product name: ${product.productName}, 
     Quantity: ${product.quantity}`;
 
-    popUpMessage="A product was deleted  ==> " + outputStr;
+    popUpMessage="A product was deleted  ==> " + outputStr;}
+    catch (e) {
+      console.log("Exception thrown in deleting a product notification, e: " + e);
+    }
   });
 
   // Adding a new receipt
   socket.on("add-receipt", (receipt) => {
+    try{
     let products = "";
     receipt.product.forEach((element, i) => {
       products +=
@@ -80,13 +99,20 @@ io.on("connection", (socket) => {
     });
     const outputStr = `Products sold:- ${products}`;
 
-    popUpMessage="A Cashier Sold some items ==> " + outputStr;
+    popUpMessage="A Cashier Sold some items ==> " + outputStr;}
+    catch (e) {
+      console.log("Exception thrown in adding a new receipt, e: " + e);
+    }
   });
 
   //a new signin
   socket.on('sign-in',(payload)=>{
+    try{
     const outputStr= `user name : ${payload.username}`
-    popUpMessage=`${outputStr} signed in`;
+    popUpMessage=`${outputStr} signed in`;}
+    catch (e) {
+      console.log("Exception thrown in a new signin, e: " + e);
+    }
   })
 });
 
@@ -98,19 +124,24 @@ const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const { db } = require("./model/index");
 
 // Realted to session
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: true,
-    saveUninitialized: false,
-    store: new SequelizeStore({
-      db,
-    }),
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // Expires after one day
-    },
-  })
-);
+app.use(() => {
+  try {
+    session({
+      secret: "keyboard cat",
+      resave: true,
+      saveUninitialized: false,
+      store: new SequelizeStore({
+        db,
+      }),
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24, // Expires after one day
+      },
+    })
+  }
+  catch (e) {
+    console.log("Exception thrown in (use) session, e: " + e);
+  }
+});
 
 // use
 app.use(express.json());
@@ -130,13 +161,22 @@ app.get("/popup",bearer,acl('read'),popUp);
 //functions
 function home(req, res) {
   // res.sendFile(__dirname + "/Public/views" + "/index.html");
-  res.status(200).send("home route");
+  try{
+    res.status(200).send("home route");
+  }
+  catch (e) {
+    console.log("Exception thrown in home route, e: " + e);
+  }
 }
 function popUp(req,res){
+  try{
   if(popUpMessage){
     res.send(popUpMessage);
   }else{
     res.send('no popups')
+  }}
+  catch (e) {
+    console.log("Exception thrown in popUp, e: " + e);
   }
 }
 

@@ -1,5 +1,6 @@
 
 let Logger = (req, res, next) => {
+  try{
 
     let current_datetime = new Date();
     let formatted_date =
@@ -20,7 +21,10 @@ let Logger = (req, res, next) => {
     let status = res.statusCode;
     let log = `[${formatted_date}] ${method}:${url} ${status}`;
     console.log(log);
-    next();
+    next();}
+    catch (e) {
+      console.log("Exception thrown inlogger middleware, e: " + e);
+    }
   };
 
   module.exports=Logger;

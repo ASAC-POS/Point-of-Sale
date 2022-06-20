@@ -3,6 +3,7 @@
 const { products } = require('../model/index');
 
 module.exports = async (req, res, next) => {
+  try{
   const reqBody = req.body; // {name:productsName,quantity:productQuantity,productID:productID}
   const productSold = reqBody.product;
 
@@ -31,5 +32,8 @@ module.exports = async (req, res, next) => {
       { where: { id: product.id } }
     );
   });
-  next();
+  next();}
+  catch (e) {
+    console.log("Exception thrown in detuct middleware, e: " + e);
+  }
 };

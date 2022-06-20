@@ -38,17 +38,22 @@ router.get("/products", bearerAuth, acl("read"), getAllProducts);
 
 //add new product
 async function addProduct(req, res) {
+  try{
   const reqBody = req.body;
   reqBody.storeID = req.session.storeID;
   const addedProduct = await products.create(reqBody);
 
   socket.emit("add-product", addedProduct);
 
-  res.status(201).json(addedProduct);
+  res.status(201).json(addedProduct);}
+  catch (e) {
+    console.log("Exception thrown in add new product function, e: " + e);
+  }
 }
 
 //gete data of one type of product
 async function getProduct(req, res) {
+  try{
   const id = req.params.id;
   const found = await products.findOne({ where: { id: id } });
   if (found === null) {
@@ -59,11 +64,15 @@ async function getProduct(req, res) {
     } else {
       res.status(403).send("Unauthorized access");
     }
+  }}
+  catch (e) {
+    console.log("Exception thrown in get data of one type of product function, e: " + e);
   }
 }
 
 //update product's data
 async function updateProduct(req, res) {
+  try {
   const id = req.params.id;
   const oldProduct = await products.findOne({ where: { id: id } });
   if (oldProduct.storeID === req.session.storeID) {
@@ -79,9 +88,15 @@ async function updateProduct(req, res) {
     res.status(403).send("Unauthorized access");
   }
 }
+catch (e) {
+  console.log("Exception thrown in update product's data function, e: " + e);
+}
+
+}
 
 //delete a product
 async function deleteProduct(req, res) {
+  try{
   const id = req.params.id;
   const deletedProduct = await products.findOne({ where: { id: id } });
   if (deletedProduct.storeID === req.session.storeID) {
@@ -94,16 +109,23 @@ async function deleteProduct(req, res) {
       .json({ message: `product with id: ${id} was deleted successfully` });
   } else {
     res.status(403).json("Unauthorized access");
+  }}
+  catch (e) {
+    console.log("Exception thrown in delete a product function, e: " + e);
   }
 }
 
 // get all products of a store
 // This will retrieve the products for only the store of the signed in user
 async function getAllProducts(req, res) {
+  try{
   // const sessionStoreID = ;
   res
     .status(200)
     .json(await products.findAll({ where: { storeID: req.session.storeID } }));
 }
-
+catch (e) {
+  console.log("Exception thrown in get all products of a store function, e: " + e);
+}
+}
 module.exports = router;

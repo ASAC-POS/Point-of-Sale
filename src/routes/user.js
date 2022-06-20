@@ -32,6 +32,7 @@ router.delete("/user/:id", bearerAuth, acl("delete"), deleteUser); //only the ad
 //functions
 //add users
 async function addUser(req, res) {
+  try{
   const reqBody = req.body;
   reqBody.password = await bcrypt.hash(reqBody.password, 5);
   reqBody.storeID = req.session.storeID;
@@ -41,20 +42,30 @@ async function addUser(req, res) {
 
   res.status(201).json(addedUser);
 }
+catch (e) {
+  console.log("Exception thrown in add users function, e: " + e);
+}
+}
 
-//get users by id
+//get users by idget all of the store's receipts
 async function getUser(req, res) {
+  try{
   const id = req.params.id;
   const found = await Users.findOne({ where: { id: id } });
   if (found.storeID === req.session.storeID) {
     res.status(200).json(found);
   } else {
     res.status(403).send("Unauthorized access");
+  }}
+
+  catch (e) {
+    console.log("Exception thrown in get users by idget all of the store's receipts function, e: " + e);
   }
 }
 
 //update user info
 async function updateUser(req, res) {
+  try{
   const id = req.params.id;
   const oldPass = await Users.findOne({ where: { id: id } });
   const reqBody = req.body;
@@ -71,11 +82,16 @@ async function updateUser(req, res) {
     });
   } else {
     res.status(403).send("Unauthorized access");
+  }}
+  catch (e) {
+    console.log("Exception thrown in update user info function, e: " + e);
   }
+
 }
 
 //delete user
 async function deleteUser(req, res) {
+  try{
   const id = req.params.id;
   const deletedUser = await Users.findOne({ where: { id } });
   if (deletedUser.storeID === req.session.storeID) {
@@ -86,14 +102,22 @@ async function deleteUser(req, res) {
     res
       .status(200)
       .json({ message: `user with id: ${id} was deleted successfully` });
-  } else res.status(403).send("Unauthorized access");
+  } else res.status(403).send("Unauthorized access");}
+  catch (e) {
+    console.log("Exception thrown in delete user function, e: " + e);
+  }
 }
 
 // Get all of the sotre users
 async function getAllusers(req, res) {
+  try{
   res
     .status(200)
     .json(await Users.findAll({ where: { storeID: req.session.storeID } }));
+}
+catch (e) {
+  console.log("Exception thrown in Get all of the sotre users function, e: " + e);
+}
 }
 
 module.exports = router;

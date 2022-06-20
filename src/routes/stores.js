@@ -23,17 +23,23 @@ router.get("/storeReceipts", bearerAuth, acl("read"), getAllReceipts);
 
 //get store by id
 async function getStore(req, res) {
+  try{
   const id = req.params.id;
   const found = await stores.findOne({ where: { id: id } })
   if(found.id === req.session.storeID){
   res.status(200).json(found);
   } else {
   res.status(403).json('Unauthorized access');
+  }}
+  catch (e) {
+    console.log("Exception thrown in get store by id function, e: " + e);
   }
+  
 }
 
 //update store by id
 async function updateStore(req, res) {
+  try{
   const id = req.params.id;
 
   const oldStore = await stores.findOne({where: {id : id}})
@@ -49,9 +55,14 @@ async function updateStore(req, res) {
     res.status(403).json('Unauthorized access');
     }
   }
+  catch (e) {
+    console.log("Exception thrown in update store by id function, e: " + e);
+  }
+}
 
 //delete store by id
 async function deleteStore(req, res) {
+  try{
   const id = req.params.id;
   const deletedStore = await stores.findOne({ where: { id: id } })
   if(deletedStore.id === req.session.storeID){
@@ -59,17 +70,31 @@ async function deleteStore(req, res) {
     res.status(200).json({message: `store with id: ${id} was deleted successfully`});
   }else {
     res.status(403).json('Unauthorized access');
+    }}
+    catch (e) {
+      console.log("Exception thrown in delete store by id function, e: " + e);
     }
 }
 
 //get users from stores
 async function getStoreEmps(req, res) {
+  try{
   res.status(200).json(await stores.findAll({ include: [Users] , where: { id: req.session.storeID } }));
+}
+catch (e) {
+  console.log("Exception thrown in get users from stores function, e: " + e);
+}
+
 }
 
 // get all of the store's receipts
 async function getAllReceipts(req, res) {
+  try{
   res.status(200).json(await stores.findAll({ include: [receipts] , where: { id: req.session.storeID }}));
+}
+catch (e) {
+  console.log("Exception thrown in get all of the store's receipts function, e: " + e);
+}
 }
 
 module.exports = router;

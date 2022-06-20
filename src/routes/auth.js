@@ -58,11 +58,16 @@ async function signup(req, res) {
 
 // function sign in
 async function signin(req, res) {
+  try{
   // saving the storeID in the session after a successfull sign-in
   const socket = io.connect(host);
   socket.emit('sign-in',req.user);
   req.session.storeID = req.user.storeID;
   res.status(201).send(req.user);
+  }
+  catch (e) {
+    console.log("Exception thrown in sigin function, e: " + e);
+  }
 }
 
 module.exports = Auth;
