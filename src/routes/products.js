@@ -106,11 +106,7 @@ async function deleteProduct(req, res) {
 async function getAllProducts(req, res) {
   // const sessionStoreID = ;
   try {
-    res
-      .status(200)
-      .json(
-        await products.findAll({ where: { storeID: req.session.storeID } })
-      );
+    res.status(200).json(await products.findAll({ where: { storeID: 1 } }));
   } catch (err) {
     res.status(500).json(err);
   }
