@@ -106,6 +106,7 @@ async function deleteProduct(req, res) {
 async function getAllProducts(req, res) {
   // const sessionStoreID = ;
   try {
+    console.log(req.session);
     res
       .status(200)
       .json(
