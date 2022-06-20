@@ -108,9 +108,6 @@ app.use(
     }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // Expires after one day
-      sameSite: 'none',
-      httpOnly: true,
-      secure: true,
     },
   })
 );
