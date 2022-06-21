@@ -61,10 +61,10 @@ async function getReceipt(req, res) {
   const id = req.params.id;
   try {
     const found = await receipts.findOne({ where: { id: id } });
-    if (found === null) {
+    if (!found) {
       res.status(200).send('This item might not exists');
     } else {
-      if (found.storeID === req.query.cookie) {
+      if (found.storeID == req.query.cookie) {
         res.status(200).json(found);
       } else {
         res.status(403).send('Unauthorized access');
@@ -80,10 +80,10 @@ async function updateReceipt(req, res) {
   const id = req.params.id;
   try {
     const oldReceipt = await receipts.findOne({ where: { id: id } });
-    if (oldReceipt === null) {
+    if (!oldReceipt) {
       res.status(200).send('This item might not exists');
     } else {
-      if (oldReceipt.storeID === req.query.cookie) {
+      if (oldReceipt.storeID == req.query.cookie) {
         const reqBody = req.body;
         reqBody.storeID = req.query.cookie;
         await receipts.update(reqBody, { where: { id: id } });
@@ -105,10 +105,10 @@ async function updateReceipt(req, res) {
 async function deleteReceipt(req, res) {
   const id = req.params.id;
   const deletedReceipt = await receipts.findOne({ where: { id: id } });
-  if (deletedReceipt === null) {
+  if (!deletedReceipt) {
     res.status(200).send('This item might not exists');
   } else {
-    if (deletedReceipt.storeID === req.query.cookie) {
+    if (deletedReceipt.storeID == req.query.cookie) {
       await receipts.destroy({ where: { id: id } });
       res
         .status(200)

@@ -56,10 +56,10 @@ async function getProduct(req, res) {
   const id = req.params.id;
   try {
     const found = await products.findOne({ where: { id: id } });
-    if (found === null) {
+    if (!found) {
       res.status(200).json('this product might not exists');
     } else {
-      if (found.storeID === req.query.cookie) {
+      if (found.storeID == req.query.cookie) {
         res.status(200).json(found);
       } else {
         res.status(403).send('Unauthorized access');
@@ -75,7 +75,7 @@ async function updateProduct(req, res) {
   const id = req.params.id;
   try {
     const oldProduct = await products.findOne({ where: { id: id } });
-    if (oldProduct.storeID === req.query.cookie) {
+    if (oldProduct.storeID == req.query.cookie) {
       const reqBody = req.body;
       reqBody.storeID = req.query.cookie;
       await products.update(reqBody, { where: { id: id } });
@@ -97,7 +97,7 @@ async function deleteProduct(req, res) {
   const id = req.params.id;
   try {
     const deletedProduct = await products.findOne({ where: { id: id } });
-    if (deletedProduct.storeID === req.query.cookie) {
+    if (deletedProduct.storeID == req.query.cookie) {
       await products.destroy({ where: { id: id } });
 
       socket.emit('delete-product', deletedProduct);

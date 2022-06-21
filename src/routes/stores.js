@@ -25,7 +25,9 @@ router.get('/storeReceipts', bearerAuth, acl('read'), getAllReceipts);
 async function getStore(req, res) {
   const id = req.params.id;
   const found = await stores.findOne({ where: { id: id } });
-  if (found.id === req.query.cookie) {
+  console.log(12121212, typeof found.id);
+  console.log(12121212, typeof req.query.cookie);
+  if (found.id == req.query.cookie) {
     res.status(200).json(found);
   } else {
     res.status(403).json('Unauthorized access');
@@ -37,7 +39,7 @@ async function updateStore(req, res) {
   const id = req.params.id;
 
   const oldStore = await stores.findOne({ where: { id: id } });
-  if (oldStore.id === req.query.cookie) {
+  if (oldStore.id == req.query.cookie) {
     const reqBody = req.body;
     reqBody.id = req.query.cookie;
     await stores.update(reqBody, { where: { id: id } });
@@ -56,7 +58,7 @@ async function updateStore(req, res) {
 async function deleteStore(req, res) {
   const id = req.params.id;
   const deletedStore = await stores.findOne({ where: { id: id } });
-  if (deletedStore.id === req.query.cookie) {
+  if (deletedStore.id == req.query.cookie) {
     await stores.destroy({ where: { id: id } });
     res
       .status(200)
