@@ -39,44 +39,56 @@ router.get('/products', bearerAuth, acl('read'), getAllProducts);
 //add new product
 async function addProduct(req, res) {
   const reqBody = req.body;
-  reqBody.storeID = req.session.storeID;
-  const addedProduct = await products.create(reqBody);
+  reqBody.storeID = req.session.storeID || req.query.cookie;
+  try {
+    const addedProduct = await products.create(reqBody);
 
-  socket.emit('add-product', addedProduct);
+    socket.emit('add-product', addedProduct);
 
-  res.status(201).json(addedProduct);
+    res.status(201).json(addedProduct);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 }
 
 //gete data of one type of product
 async function getProduct(req, res) {
   const id = req.params.id;
-  const found = await products.findOne({ where: { id: id } });
-  if (found === null) {
-    res.status(200).json('this product might not exists');
-  } else {
-    if (found.storeID === req.session.storeID) {
-      res.status(200).json(found);
+  try {
+    const found = await products.findOne({ where: { id: id } });
+    if (found === null) {
+      res.status(200).json('this product might not exists');
     } else {
-      res.status(403).send('Unauthorized access');
+      if (found.storeID === (req.session.storeID || req.query.cookie)) {
+        res.status(200).json(found);
+      } else {
+        res.status(403).send('Unauthorized access');
+      }
     }
+  } catch (err) {
+    res.status(500).send(err);
   }
 }
 
 //update product's data
 async function updateProduct(req, res) {
   const id = req.params.id;
-  const oldProduct = await products.findOne({ where: { id: id } });
-  if (oldProduct.storeID === req.session.storeID) {
-    const reqBody = req.body;
-    reqBody.storeID = req.session.storeID;
-    await products.update(reqBody, { where: { id: id } });
-    const updatedProduct = await products.findOne({ where: { id: id } });
-    res.status(201).json({
-      product: updatedProduct,
-      message: `product with product id: ${id} was updated successfully`,
-    });
-  } else {
-    res.status(403).send('Unauthorized access');
+  try {
+    const oldProduct = await products.findOne({ where: { id: id } });
+    if (oldProduct.storeID === req.query.cookie) {
+      const reqBody = req.body;
+      reqBody.storeID = req.session.storeID || req.query.cookie;
+      await products.update(reqBody, { where: { id: id } });
+      const updatedProduct = await products.findOne({ where: { id: id } });
+      res.status(201).json({
+        product: updatedProduct,
+        message: `product with product id: ${id} was updated successfully`,
+      });
+    } else {
+      res.status(403).send('Unauthorized access');
+    }
+  } catch (err) {
+    res.status(500).send(err);
   }
 }
 
@@ -85,7 +97,7 @@ async function deleteProduct(req, res) {
   const id = req.params.id;
   try {
     const deletedProduct = await products.findOne({ where: { id: id } });
-    if (deletedProduct.storeID === req.session.storeID) {
+    if (deletedProduct.storeID === (req.session.storeID || req.query.cookie)) {
       await products.destroy({ where: { id: id } });
 
       socket.emit('delete-product', deletedProduct);
@@ -107,12 +119,13 @@ async function getAllProducts(req, res) {
   // const sessionStoreID = ;
   try {
     console.log(11111111111111111111111111111111, req.session);
-    res
-      .status(200)
-      .json(
-        await products.findAll({ where: { storeID: req.session.storeID } })
-      );
+    res.status(200).json(
+      await products.findAll({
+        where: { storeID: res.session.storeID || req.query.cookie },
+      })
+    );
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 }

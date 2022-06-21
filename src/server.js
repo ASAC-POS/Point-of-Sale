@@ -96,22 +96,22 @@ io.on('connection', (socket) => {
 const session = require('express-session');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { db } = require('./model/index');
-
+const store = new SequelizeStore({
+  db,
+});
 // Realted to session
+app.set('trust proxy', 1);
 app.use(
   session({
     secret: 'keyboard cat',
     resave: true,
     saveUninitialized: false,
-    store: new SequelizeStore({
-      db,
-    }),
+    store: store,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // Expires after one day
     },
   })
 );
-
 // use
 app.use(express.json());
 app.use(cors());
@@ -143,6 +143,7 @@ function popUp(req, res) {
 function start(port) {
   server.listen(port, () => {
     console.log(`Running on port ${port}`);
+    // console.log(store);
   });
 }
 
