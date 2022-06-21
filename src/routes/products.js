@@ -39,7 +39,7 @@ router.get('/products', bearerAuth, acl('read'), getAllProducts);
 //add new product
 async function addProduct(req, res) {
   const reqBody = req.body;
-  reqBody.storeID = req.session.storeID || req.query.cookie;
+  reqBody.storeID = req.query.cookie;
   try {
     const addedProduct = await products.create(reqBody);
 
@@ -59,7 +59,7 @@ async function getProduct(req, res) {
     if (found === null) {
       res.status(200).json('this product might not exists');
     } else {
-      if (found.storeID === (req.session.storeID || req.query.cookie)) {
+      if (found.storeID === req.query.cookie) {
         res.status(200).json(found);
       } else {
         res.status(403).send('Unauthorized access');
@@ -77,7 +77,7 @@ async function updateProduct(req, res) {
     const oldProduct = await products.findOne({ where: { id: id } });
     if (oldProduct.storeID === req.query.cookie) {
       const reqBody = req.body;
-      reqBody.storeID = req.session.storeID || req.query.cookie;
+      reqBody.storeID = req.query.cookie;
       await products.update(reqBody, { where: { id: id } });
       const updatedProduct = await products.findOne({ where: { id: id } });
       res.status(201).json({
@@ -97,7 +97,7 @@ async function deleteProduct(req, res) {
   const id = req.params.id;
   try {
     const deletedProduct = await products.findOne({ where: { id: id } });
-    if (deletedProduct.storeID === (req.session.storeID || req.query.cookie)) {
+    if (deletedProduct.storeID === req.query.cookie) {
       await products.destroy({ where: { id: id } });
 
       socket.emit('delete-product', deletedProduct);
@@ -118,7 +118,6 @@ async function deleteProduct(req, res) {
 async function getAllProducts(req, res) {
   // const sessionStoreID = ;
   try {
-    console.log(11111111111111111111111111111111, req.session);
     res.status(200).json(
       await products.findAll({
         where: { storeID: req.query.cookie },
