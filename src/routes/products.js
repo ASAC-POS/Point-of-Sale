@@ -121,7 +121,7 @@ async function getAllProducts(req, res) {
     console.log(11111111111111111111111111111111, req.session);
     res.status(200).json(
       await products.findAll({
-        where: { storeID: res.session.storeID || req.query.cookie },
+        where: { storeID: req.query.cookie },
       })
     );
   } catch (err) {
