@@ -32,14 +32,19 @@ router.delete('/user/:id', bearerAuth, acl('delete'), deleteUser); //only the ad
 //functions
 //add users
 async function addUser(req, res) {
-  const reqBody = req.body;
-  reqBody.password = await bcrypt.hash(reqBody.password, 5);
-  reqBody.storeID = req.query.cookie;
-  const addedUser = await Users.create(reqBody);
+  try {
+    const reqBody = req.body;
+    console.log(5555555555555, req.body);
+    reqBody.password = await bcrypt.hash(reqBody.password, 5);
+    reqBody.storeID = req.query.cookie;
+    const addedUser = await Users.create(reqBody);
+    console.log(111123131313131, 'i am here addUser function');
+    socket.emit('add-user', addedUser);
 
-  socket.emit('add-user', addedUser);
-
-  res.status(201).json(addedUser);
+    res.status(201).json(addedUser);
+  } catch (err) {
+    res.status(500).send(err);
+  }
 }
 
 //get users by id

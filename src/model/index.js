@@ -35,7 +35,7 @@ const userModel = users(sequelize, DataTypes);
 const storesModel = stores(sequelize, DataTypes);
 const receiptsModel = receipts(sequelize, DataTypes);
 const productsModel = products(sequelize, DataTypes);
-// console.log(userModel)
+// //console.log(userModel)
 
 // Store one-to-many relation with the users
 //hasMany store has many users

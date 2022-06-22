@@ -18,10 +18,10 @@ const basicAuth = async (req, res, next) => {
       const user = await Users.findOne({ where: { username: username } });
       var validPass = await bcrypt.compare(password, user.password);
       if (validPass) {
-        // console.log('222222222222222 line 21 basicAuth', validPass);
+        // //console.log('222222222222222 line 21 basicAuth', validPass);
         let newToken = JWT.sign({ username: user.username }, SECRET);
         user.token = newToken;
-        // console.log('22222222222222222 line 24 basicAuth ---->', user);
+        // //console.log('22222222222222222 line 24 basicAuth ---->', user);
         req.user = user;
         next();
       } else {

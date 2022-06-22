@@ -23,7 +23,7 @@ const host = `http://localhost:${process.env.PORT}`;
 // // socketServer.on("connection");
 
 // socketServer.on("connect_error", (err) => {
-//   console.log(`connect_error due to ${err.message}`);
+//   //console.log(`connect_error due to ${err.message}`);
 // });
 
 ///////
@@ -62,7 +62,7 @@ async function signin(req, res) {
   const socket = io.connect(host);
   socket.emit('sign-in', req.user);
   req.session.storeID = req.user.storeID;
-  console.log(req.session);
+  //console.log(req.session);
   res.status(201).send({ user: req.user, storeID: req.session.storeID });
 }
 

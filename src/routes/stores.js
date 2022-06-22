@@ -25,8 +25,8 @@ router.get('/storeReceipts', bearerAuth, acl('read'), getAllReceipts);
 async function getStore(req, res) {
   const id = req.params.id;
   const found = await stores.findOne({ where: { id: id } });
-  console.log(12121212, typeof found.id);
-  console.log(12121212, typeof req.query.cookie);
+  //console.log(12121212, typeof found.id);
+  //console.log(12121212, typeof req.query.cookie);
   if (found.id == req.query.cookie) {
     res.status(200).json(found);
   } else {
@@ -44,7 +44,7 @@ async function updateStore(req, res) {
     reqBody.id = req.query.cookie;
     await stores.update(reqBody, { where: { id: id } });
     const updatedStore = await stores.findOne({ where: { id: id } });
-    console.log(updatedStore);
+    //console.log(updatedStore);
     res.status(201).json({
       updatedStore: updatedStore,
       message: `store with id: ${id} was updated successfully`,
