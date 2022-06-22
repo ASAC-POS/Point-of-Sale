@@ -44,7 +44,7 @@ async function addReceipt(req, res) {
     reqBody.discount = 0;
     reqBody.totalAfterDiscount = total;
   }
-  reqBody.storeID = req.session.storeID || req.query.cookie;
+  reqBody.storeID = req.query.cookie;
   try {
     const addedReceipt = await receipts.create(reqBody);
 
@@ -61,10 +61,10 @@ async function getReceipt(req, res) {
   const id = req.params.id;
   try {
     const found = await receipts.findOne({ where: { id: id } });
-    if (found === null) {
+    if (!found) {
       res.status(200).send('This item might not exists');
     } else {
-      if (found.storeID === (req.session.storeID || req.query.cookie)) {
+      if (found.storeID == req.query.cookie) {
         res.status(200).json(found);
       } else {
         res.status(403).send('Unauthorized access');
@@ -80,12 +80,12 @@ async function updateReceipt(req, res) {
   const id = req.params.id;
   try {
     const oldReceipt = await receipts.findOne({ where: { id: id } });
-    if (oldReceipt === null) {
+    if (!oldReceipt) {
       res.status(200).send('This item might not exists');
     } else {
-      if (oldReceipt.storeID === (req.session.storeID || req.query.cookie)) {
+      if (oldReceipt.storeID == req.query.cookie) {
         const reqBody = req.body;
-        reqBody.storeID = req.session.storeID || req.query.cookie;
+        reqBody.storeID = req.query.cookie;
         await receipts.update(reqBody, { where: { id: id } });
         const updatedreceipt = await receipts.findOne({ where: { id: id } });
         res.status(201).json({
@@ -105,10 +105,10 @@ async function updateReceipt(req, res) {
 async function deleteReceipt(req, res) {
   const id = req.params.id;
   const deletedReceipt = await receipts.findOne({ where: { id: id } });
-  if (deletedReceipt === null) {
+  if (!deletedReceipt) {
     res.status(200).send('This item might not exists');
   } else {
-    if (deletedReceipt.storeID === (req.session.storeID || req.query.cookie)) {
+    if (deletedReceipt.storeID == req.query.cookie) {
       await receipts.destroy({ where: { id: id } });
       res
         .status(200)
@@ -123,7 +123,7 @@ async function deleteReceipt(req, res) {
 async function getReceiptEmps(req, res) {
   const receiptsEmps = await Users.findAll({
     include: [receipts],
-    where: { storeID: req.session.storeID || req.query.cookie },
+    where: { storeID: req.query.cookie },
   });
   res.status(200).json(receiptsEmps);
 }
@@ -134,7 +134,7 @@ async function getReceiptEmpsByID(req, res) {
   res.status(200).json(
     await Users.findOne({
       include: [receipts],
-      where: { storeID: req.session.storeID || req.query.cookie, id: id },
+      where: { storeID: req.query.cookie, id: id },
     })
   );
 }

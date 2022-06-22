@@ -1,6 +1,5 @@
 const products = (sequelize, DataTypes) =>
-  sequelize.define("products", {
-    
+  sequelize.define('products', {
     productName: {
       type: DataTypes.STRING,
     },
@@ -8,10 +7,9 @@ const products = (sequelize, DataTypes) =>
     quantity: {
       type: DataTypes.FLOAT,
     },
-    
-    description:{
-      type: DataTypes.TEXT,
 
+    description: {
+      type: DataTypes.TEXT,
     },
 
     price: {
@@ -25,6 +23,9 @@ const products = (sequelize, DataTypes) =>
     storeID: {
       type: DataTypes.INTEGER,
       // allowNull: false,
+    },
+    imgURL: {
+      type: DataTypes.STRING,
     },
   });
 
