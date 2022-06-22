@@ -1,22 +1,22 @@
-"use strict";
+'use strict';
 
 //this will include signup and signin routes
 
 //require
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
 
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 
-const { Users, stores } = require("../model/index");
+const { Users, stores } = require('../model/index');
 
-const basicAuth = require("../middlewares/basicAuth");
-const validator = require("../middlewares/validator");
+const basicAuth = require('../middlewares/basicAuth');
+const validator = require('../middlewares/validator');
 
 const Auth = express.Router();
 
 ///////
-const io = require("socket.io-client");
+const io = require('socket.io-client');
 const host = `http://localhost:${process.env.PORT}`;
 // const socketServer = io.connect(host);
 
@@ -29,8 +29,8 @@ const host = `http://localhost:${process.env.PORT}`;
 ///////
 
 //routes
-Auth.post("/register", validator, signup);
-Auth.post("/signin", basicAuth, signin);
+Auth.post('/register', validator, signup);
+Auth.post('/signin', basicAuth, signin);
 
 //functions
 // function register
@@ -46,7 +46,7 @@ async function signup(req, res) {
     const record = await Users.create({
       username: req.body.username,
       password: req.body.password,
-      role: "admin",
+      role: 'admin',
       storeID: store.id,
     });
 
@@ -60,9 +60,9 @@ async function signup(req, res) {
 async function signin(req, res) {
   // saving the storeID in the session after a successfull sign-in
   const socket = io.connect(host);
-  socket.emit('sign-in',req.user);
-  req.session.storeID = req.user.storeID;
-  res.status(201).send(req.user);
+  socket.emit('sign-in', req.user);
+  req.session.cookie.storeID = req.user.storeID;
+  res.status(201).send({ user: req.user, storeID: req.session.storeID });
 }
 
 module.exports = Auth;
