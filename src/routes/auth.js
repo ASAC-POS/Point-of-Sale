@@ -17,7 +17,7 @@ const Auth = express.Router();
 
 ///////
 const io = require('socket.io-client');
-const host = `http://localhost:${process.env.PORT}`;
+const host = `https://debuggers-pos.herokuapp.com`;
 // const socketServer = io.connect(host);
 
 // // socketServer.on("connection");
