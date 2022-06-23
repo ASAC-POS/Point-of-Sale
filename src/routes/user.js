@@ -49,12 +49,16 @@ async function addUser(req, res) {
 
 //get users by id
 async function getUser(req, res) {
-  const id = req.params.id;
-  const found = await Users.findOne({ where: { id: id } });
-  if (found.storeID == req.query.cookie) {
-    res.status(200).json(found);
-  } else {
-    res.status(403).send('Unauthorized access');
+  try {
+    const id = req.params.id;
+    const found = await Users.findOne({ where: { id: id } });
+    if (found.storeID == req.query.cookie) {
+      res.status(200).json(found);
+    } else {
+      res.status(403).send('Unauthorized access');
+    }
+  } catch (error) {
+    res.statues(500).send(error);
   }
 }
 
@@ -87,26 +91,34 @@ async function updateUser(req, res) {
 
 //delete user
 async function deleteUser(req, res) {
-  const id = req.params.id;
-  const deletedUser = await Users.findOne({ where: { id } });
-  if (deletedUser.storeID == req.query.cookie) {
-    await Users.destroy({ where: { id: id } });
+  try {
+    const id = req.params.id;
+    const deletedUser = await Users.findOne({ where: { id } });
+    if (deletedUser.storeID == req.query.cookie) {
+      await Users.destroy({ where: { id: id } });
 
-    socket.emit('delete-user', deletedUser);
+      socket.emit('delete-user', deletedUser);
 
-    res
-      .status(200)
-      .json({ message: `user with id: ${id} was deleted successfully` });
-  } else res.status(403).send('Unauthorized access');
+      res
+        .status(200)
+        .json({ message: `user with id: ${id} was deleted successfully` });
+    } else res.status(403).send('Unauthorized access');
+  } catch (error) {
+    res.statues(500).send(error);
+  }
 }
 
 // Get all of the sotre users
 async function getAllusers(req, res) {
-  res.status(200).json(
-    await Users.findAll({
-      where: { storeID: req.query.cookie },
-    })
-  );
+  try {
+    res.status(200).json(
+      await Users.findAll({
+        where: { storeID: req.query.cookie },
+      })
+    );
+  } catch (error) {
+    res.statues(500).send(error);
+  }
 }
 
 module.exports = router;

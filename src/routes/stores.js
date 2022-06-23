@@ -36,35 +36,43 @@ async function getStore(req, res) {
 
 //update store by id
 async function updateStore(req, res) {
-  const id = req.params.id;
+  try {
+    const id = req.params.id;
 
-  const oldStore = await stores.findOne({ where: { id: id } });
-  if (oldStore.id == req.query.cookie) {
-    const reqBody = req.body;
-    reqBody.id = req.query.cookie;
-    await stores.update(reqBody, { where: { id: id } });
-    const updatedStore = await stores.findOne({ where: { id: id } });
-    //console.log(updatedStore);
-    res.status(201).json({
-      updatedStore: updatedStore,
-      message: `store with id: ${id} was updated successfully`,
-    });
-  } else {
-    res.status(403).json('Unauthorized access');
+    const oldStore = await stores.findOne({ where: { id: id } });
+    if (oldStore.id == req.query.cookie) {
+      const reqBody = req.body;
+      reqBody.id = req.query.cookie;
+      await stores.update(reqBody, { where: { id: id } });
+      const updatedStore = await stores.findOne({ where: { id: id } });
+      //console.log(updatedStore);
+      res.status(201).json({
+        updatedStore: updatedStore,
+        message: `store with id: ${id} was updated successfully`,
+      });
+    } else {
+      res.status(403).json('Unauthorized access');
+    }
+  } catch (error) {
+    res.statues(500).send(error);
   }
 }
 
 //delete store by id
 async function deleteStore(req, res) {
-  const id = req.params.id;
-  const deletedStore = await stores.findOne({ where: { id: id } });
-  if (deletedStore.id == req.query.cookie) {
-    await stores.destroy({ where: { id: id } });
-    res
-      .status(200)
-      .json({ message: `store with id: ${id} was deleted successfully` });
-  } else {
-    res.status(403).json('Unauthorized access');
+  try {
+    const id = req.params.id;
+    const deletedStore = await stores.findOne({ where: { id: id } });
+    if (deletedStore.id == req.query.cookie) {
+      await stores.destroy({ where: { id: id } });
+      res
+        .status(200)
+        .json({ message: `store with id: ${id} was deleted successfully` });
+    } else {
+      res.status(403).json('Unauthorized access');
+    }
+  } catch (error) {
+    res.statues(500).send(error);
   }
 }
 
