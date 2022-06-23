@@ -37,6 +37,10 @@ io.on('connection', (socket) => {
     //console.log(popUpMessage);
   });
 
+  socket.on('reload-notifications', (payload) => {
+    io.broadcast.emit('connection', socket.id);
+  });
+
   // Deleting a user notification
   socket.on('delete-user', (deletedUser) => {
     const outputStr = `username: ${deletedUser.username},
