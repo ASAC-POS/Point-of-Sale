@@ -67,7 +67,9 @@ async function updateUser(req, res) {
     if (oldPass.storeID == req.query.cookie) {
       reqBody.storeID = req.query.cookie;
       if (reqBody.password !== oldPass.password) {
-        reqBody.password = await bcrypt.hash(reqBody.password, 5);
+        if (reqBody.password) {
+          reqBody.password = await bcrypt.hash(reqBody.password, 5);
+        }
       }
       await Users.update(reqBody, { where: { id: id } });
       const updatedUser = await Users.findOne({ where: { id: id } });
