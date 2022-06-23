@@ -11,7 +11,7 @@ const checkQuantity = require('../middlewares/checkquantity');
 ///
 
 const io = require('socket.io-client');
-const host = `https://debuggers-pos.herokuapp.com/`;
+const host = `http://localhost:${process.env.PORT}`;
 
 const socket = io.connect(host);
 
