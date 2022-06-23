@@ -60,22 +60,26 @@ async function getUser(req, res) {
 
 //update user info
 async function updateUser(req, res) {
-  const id = req.params.id;
-  const oldPass = await Users.findOne({ where: { id: id } });
-  const reqBody = req.body;
-  if (oldPass.storeID == req.query.cookie) {
-    reqBody.storeID = req.query.cookie;
-    if (reqBody.password !== oldPass.password) {
-      reqBody.password = await bcrypt.hash(reqBody.password, 5);
+  try {
+    const id = req.params.id;
+    const oldPass = await Users.findOne({ where: { id: id } });
+    const reqBody = req.body;
+    if (oldPass.storeID == req.query.cookie) {
+      reqBody.storeID = req.query.cookie;
+      if (reqBody.password !== oldPass.password) {
+        reqBody.password = await bcrypt.hash(reqBody.password, 5);
+      }
+      await Users.update(reqBody, { where: { id: id } });
+      const updatedUser = await Users.findOne({ where: { id: id } });
+      res.status(201).json({
+        updatedUser: updatedUser,
+        message: `user with id: ${id} was updated successfully`,
+      });
+    } else {
+      res.status(403).send('Unauthorized access');
     }
-    await Users.update(reqBody, { where: { id: id } });
-    const updatedUser = await Users.findOne({ where: { id: id } });
-    res.status(201).json({
-      updatedUser: updatedUser,
-      message: `user with id: ${id} was updated successfully`,
-    });
-  } else {
-    res.status(403).send('Unauthorized access');
+  } catch (error) {
+    res.status(500).send(error);
   }
 }
 
