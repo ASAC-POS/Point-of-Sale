@@ -23,10 +23,10 @@ const http = require('http');
 const server = http.createServer(app);
 // const path = require("path");
 
-const io = require('socket.io')(server, process.env.PORT);
+const io = require('socket.io')(server, { cors: { origin: '*' } });
 let popUpMessage;
 io.on('connection', (socket) => {
-  //console.log(`Socket ID: ${socket.id}`);
+  console.log(`Socket ID: ${socket.id}`);
 
   // Adding new user notification
   socket.on('add-user', (addedUser) => {
@@ -38,7 +38,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('reload-notifications', (payload) => {
-    io.broadcast.emit('connection', socket.id);
+    console.log('reloading');
+    socket.broadcast.emit('sending-notifications', socket.id);
   });
 
   // Deleting a user notification

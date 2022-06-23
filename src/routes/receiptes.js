@@ -12,7 +12,7 @@ const checkQun = require('../middlewares/checkquantity');
 ///
 
 const io = require('socket.io-client');
-const host = `https://debuggers-pos.herokuapp.com/`;
+const host = `https://debuggers-pos.herokuapp.com`;
 
 const socket = io.connect(host);
 
@@ -103,40 +103,52 @@ async function updateReceipt(req, res) {
 
 //delete receipt by id
 async function deleteReceipt(req, res) {
-  const id = req.params.id;
-  const deletedReceipt = await receipts.findOne({ where: { id: id } });
-  if (!deletedReceipt) {
-    res.status(200).send('This item might not exists');
-  } else {
-    if (deletedReceipt.storeID == req.query.cookie) {
-      await receipts.destroy({ where: { id: id } });
-      res
-        .status(200)
-        .json({ message: `receipt with id: ${id} was deleted successfully` });
+  try {
+    const id = req.params.id;
+    const deletedReceipt = await receipts.findOne({ where: { id: id } });
+    if (!deletedReceipt) {
+      res.status(200).send('This item might not exists');
     } else {
-      res.status(403).json('Unauthorized access');
+      if (deletedReceipt.storeID == req.query.cookie) {
+        await receipts.destroy({ where: { id: id } });
+        res
+          .status(200)
+          .json({ message: `receipt with id: ${id} was deleted successfully` });
+      } else {
+        res.status(403).json('Unauthorized access');
+      }
     }
+  } catch (error) {
+    res.statues(500).send(error);
   }
 }
 
 //get users receipt
 async function getReceiptEmps(req, res) {
-  const receiptsEmps = await Users.findAll({
-    include: [receipts],
-    where: { storeID: req.query.cookie },
-  });
-  res.status(200).json(receiptsEmps);
+  try {
+    const receiptsEmps = await Users.findAll({
+      include: [receipts],
+      where: { storeID: req.query.cookie },
+    });
+    res.status(200).json(receiptsEmps);
+  } catch (error) {
+    res.statues(500).send(error);
+  }
 }
 
 //get one user receipt
 async function getReceiptEmpsByID(req, res) {
-  const id = req.params.id;
-  res.status(200).json(
-    await Users.findOne({
-      include: [receipts],
-      where: { storeID: req.query.cookie, id: id },
-    })
-  );
+  try {
+    const id = req.params.id;
+    res.status(200).json(
+      await Users.findOne({
+        include: [receipts],
+        where: { storeID: req.query.cookie, id: id },
+      })
+    );
+  } catch (error) {
+    res.statues(500).send(error);
+  }
 }
 
 module.exports = router;
