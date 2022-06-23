@@ -23,7 +23,11 @@ const http = require('http');
 const server = http.createServer(app);
 // const path = require("path");
 
-const io = require('socket.io')(server, process.env.PORT);
+const io = require('socket.io')(server, {
+  cors: {
+    origin: '*',
+  },
+});
 let popUpMessage;
 io.on('connection', (socket) => {
   //console.log(`Socket ID: ${socket.id}`);
