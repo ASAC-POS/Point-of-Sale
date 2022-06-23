@@ -11,7 +11,7 @@ const bcrypt = require('bcrypt');
 ///
 
 const io = require('socket.io-client');
-const host = `http://localhost:${process.env.PORT}`;
+const host = `https://debuggers-pos.herokuapp.com/`;
 
 const socket = io.connect(host);
 
