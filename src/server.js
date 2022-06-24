@@ -25,6 +25,7 @@ const server = http.createServer(app);
 
 const io = require('socket.io')(server, { cors: { origin: '*' } });
 let popUpMessage;
+let signinUsers = [];
 io.on('connection', (socket) => {
   console.log(`Socket ID: ${socket.id}`);
 
@@ -91,7 +92,11 @@ io.on('connection', (socket) => {
   //a new signin
   socket.on('sign-in', (payload) => {
     const outputStr = `user name : ${payload.username}`;
+    signinUsers = [...signinUsers, payload.username];
     popUpMessage = `${outputStr} signed in`;
+  });
+  socket.on('sign-out', (payload) => {
+    signinUsers.filter((user) => payload.username != user);
   });
 });
 
@@ -140,7 +145,7 @@ function home(req, res) {
 }
 function popUp(req, res) {
   if (popUpMessage) {
-    res.send(popUpMessage);
+    res.send({ popup: popUpMessage, signinUsers });
   } else {
     res.send('no popups');
   }
